@@ -1,0 +1,5 @@
+build/
+/dist/
+web/vendor/
+web/.idea/
+/nbproject

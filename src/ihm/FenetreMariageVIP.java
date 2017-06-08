@@ -2,8 +2,12 @@ package ihm;
 
 import application.Appli;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import metier.Statut;
 import metier.Vip;
+import modele.ModeleJComboBoxMariage;
 
 public class FenetreMariageVIP extends javax.swing.JDialog {
 
@@ -11,6 +15,7 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
     private Date dateMariage;
     private int numero;
     private boolean etatSortie;
+    private ModeleJComboBoxMariage leModele;
 
     public FenetreMariageVIP(java.awt.Frame parent, int numero) {
   
@@ -19,11 +24,15 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
         this.numero = numero;
         etatSortie = false;
       
-        
+        try {        
+            leModele = new ModeleJComboBoxMariage(numero);
+        } catch (Exception ex) {
+            Logger.getLogger(FenetreMariageVIP.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initComponents(); 
-        Appli.centreWindow(this);
         try {
-            vip = Appli.getDaoMariages().lireUnVipMariage(numero);
+            boxVip.setSelectedIndex(0);
+            vip = Appli.getDaoVip().lireUnVipMariage(numero);
             dateMariage = Appli.getDaoMariages().getDateMariageEnCours(numero);
             txtNom.setText(vip.getNom());
             System.out.println(dateMariage);
@@ -77,8 +86,6 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         lblDateDivorce = new javax.swing.JLabel();
         datePickerD = new org.jdesktop.swingx.JXDatePicker();
-        jLabel2 = new javax.swing.JLabel();
-        txtConjoint = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Saise d'un changement Marital");
@@ -118,7 +125,7 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
 
         lblVip2.setText("Partenaire :");
 
-        boxVip.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        boxVip.setModel(leModele);
         boxVip.setEnabled(false);
 
         lblDateMariage.setText("Date Mariage :");
@@ -174,44 +181,30 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
 
         lblDateDivorce.setText("Date Divorce :");
 
-        datePickerD.setEditable(false);
         datePickerD.setEnabled(false);
-
-        jLabel2.setText("Marié(e) à :");
-
-        txtConjoint.setEditable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblDateDivorce))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(56, 56, 56)
-                        .addComponent(datePickerD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtConjoint)))
-                .addContainerGap(85, Short.MAX_VALUE))
+                        .addComponent(datePickerD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtConjoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(46, 46, 46)
                 .addComponent(lblDateDivorce)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(datePickerD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -290,64 +283,43 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
         idvip2 a rentrer en liste déroulante en séléctionnant tous les gens sauf celui de vip1 ok pour  design
         lieu marriage a rentrer via un textfield
         */
+        int lePartenaire=-1;
+        int indexItem = boxVip.getSelectedIndex();
+        if (indexItem < 0) {
+               System.out.println("Il faut choisir un Partenaire");
+        }else{
+        lePartenaire = leModele.getVipAt(indexItem).getNum();
+        }
+        Date dateDivorceVip1 =  Appli.getDaoMariages().dernierDivorce(numero);
+        Date dateDivorceVip2 =  Appli.getDaoMariages().dernierDivorce(lePartenaire);
         
-//        try {
-//            // validation saisie du numéro de l'employé
-//            String leNumero = txNumero.getText();
-//            if (leNumero.isEmpty()) {
-//                throw new Exception("champ numero vide");
-//            }
-//            emp.setNumEmp(Integer.parseInt(leNumero));
-//            // validation saisie du nom de l'employé
-//            String leNom = txNom.getText();
-//            if (leNom.isEmpty()) {
-//                throw new Exception("champ nom vide");
-//            }
-//            emp.setNomEmp(leNom);
-//            // validation saisie du job de l'employé
-//            String leJob = txJob.getText();
-//            if (leJob.isEmpty()) {
-//                throw new Exception("champ job vide");
-//            }
-//            emp.setJobEmp(leJob);
-//            // validation saisie de la date d'embauche de l'employé
-//            String laDate = txDate.getText();
-//            if (laDate.isEmpty()) {
-//                throw new Exception("champ date vide");
-//            }
-//            // conversion de la cahine date en LocalDate et validation de la adte
-//            String[] champsDate = laDate.split("/");
-//            try {
-//                LocalDate dateEmbauche = LocalDate.of(
-//                        Integer.parseInt(champsDate[2]),
-//                        Integer.parseInt(champsDate[1]),
-//                        Integer.parseInt(champsDate[0])
-//                );
-//                LocalDate aujourdhui = LocalDate.now();
-//                if (dateEmbauche.isAfter(aujourdhui)) {
-//                    throw new Exception("date embauche postérieure à date aujour'hui");
-//                }
-//                emp.setDateEmp(dateEmbauche);
-//            } catch (DateTimeException | NumberFormatException | ArrayIndexOutOfBoundsException ex) {
-//                throw new Exception("format de date incorrect");
-//            }
-//            // sélection du département
-//            int indexItem = cbDept.getSelectedIndex();
-//            if (indexItem < 0) {
-//                throw new Exception("choisir un département");
-//            }
-//            int leDepartement = leModele.getNumDept(indexItem);
-//            emp.setDeptEmp(leDepartement);
-//
-//            etatSortie = true;
-//            this.dispose();
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, e.getMessage(), "Erreur", JOptionPane.WARNING_MESSAGE);
-//        }
+        if(  (dateDivorceVip1 == null && dateDivorceVip2 == null) 
+          || (dateDivorceVip1 == null && datePickerM.getDate().compareTo(dateDivorceVip2) > 0)
+          || (dateDivorceVip2 == null && datePickerM.getDate().compareTo(dateDivorceVip1) > 0)
+          ||  (datePickerM.getDate().compareTo(dateDivorceVip1) > 0 
+               && datePickerM.getDate().compareTo(dateDivorceVip2) > 0) ){
+            
+            //Date Valide
+            Appli.getDaoMariages().fraichementMarie(numero, lePartenaire, datePickerM.getDate(), txtLieuMariage.getText());
+        }else{
+        JOptionPane.showMessageDialog(this, "La date du Mariage est inférieure à la date d'au moins un des divorce", "Attention", JOptionPane.WARNING_MESSAGE);
+        }
+        etatSortie = true;
+        this.dispose();
     }//GEN-LAST:event_btnMariageActionPerformed
 
+//Ajout d'un divorce
     private void btnDivorceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivorceActionPerformed
-        datePickerD.getDate().compareTo(dateMariage);
+        System.out.println(datePickerD.getDate());
+        if(datePickerD.getDate().compareTo(dateMariage)<=0){
+            JOptionPane.showMessageDialog(this, "La date de Divorce est inférieure à la date de Mariage", "Attention", JOptionPane.WARNING_MESSAGE);
+        }else{
+            System.out.println("Date Valide");
+            Appli.getDaoMariages().prepareDivorce(numero,dateMariage,datePickerD.getDate());
+            // Ici on est bon
+            etatSortie = true;
+            this.dispose();
+        }
 
     }//GEN-LAST:event_btnDivorceActionPerformed
 
@@ -359,7 +331,6 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
     private org.jdesktop.swingx.JXDatePicker datePickerD;
     private org.jdesktop.swingx.JXDatePicker datePickerM;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
@@ -369,7 +340,6 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
     private javax.swing.JLabel lblPrenom;
     private javax.swing.JLabel lblStatut;
     private javax.swing.JLabel lblVip2;
-    private javax.swing.JTextField txtConjoint;
     private javax.swing.JTextField txtLieuMariage;
     private javax.swing.JTextField txtNom;
     private javax.swing.JTextField txtPrenom;

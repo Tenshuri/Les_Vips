@@ -71,26 +71,6 @@ public class ModeleJTable extends AbstractTableModel {
         return titre[column];
     }
 
-    /*public void insererEmploye(Employe emp) throws SQLException {
-        // on tente d'insérer l'employé dans la base
-        leDaoEmp.insererEmploye(emp);
-        // si c'est OK on l'ajoute au conteneur du modèle
-        leConteneur.add(emp);
-        // on rafraichit la vue par une notification de modification des données  
-        this.fireTableDataChanged();
-    }
-
-    public void supprimerEmploye(int ligne) throws SQLException {
-        // on récupère le numéro de l'employé de la ligne sélectionnée
-        int numEmp = (int) getValueAt(ligne, 0);
-        // on tente de supprimer l'employé dans la base
-        leDaoEmp.supprimerEmploye(numEmp);
-        // si c'est OK on l'enlève du conteneur du modèle
-        leConteneur.remove(ligne);
-        // on rafraichit la vue par une notification de modification des données
-        this.fireTableDataChanged();
-    }*/
-
     public void chargerLesVips() throws SQLException, Exception {
         try {
             // chargement de tous les vips dans la base dans le conteneur du modèle

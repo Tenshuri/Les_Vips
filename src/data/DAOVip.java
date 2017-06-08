@@ -103,6 +103,49 @@ public class DAOVip {
         return corresNat.get(nationalite);
     }
     
+	public Vip lireUnVipMariage(int numero) {
+        try {
+            String requete = "select * from vip WHERE idvip = ? ;";
+            PreparedStatement pstmt = connexion.prepareStatement(requete);
+            pstmt.setInt(1,numero);
+            ResultSet rset = pstmt.executeQuery();
+            rset.next();
+            
+            int num = rset.getInt(1);
+            String nom = rset.getString(2);
+            String prenom = rset.getString(3);
+            Statut statut = Vip.getStatut(rset.getInt(8));
+            
+            Vip vip = new Vip(num,nom,prenom,statut);
+            
+            rset.close();
+            pstmt.close();
+            return vip;
+            
+        } catch (SQLException se) {
+            System.out.println("sql " + se.getMessage());
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    
+        // codeStatut -> le statut qu'on veut avoir apès le changement
+        // Libre = 1 
+        // Marié(e) = 2
+    public void changerStatut(int numVip, int codeStatut){
+        try {
+            
+            String requete = "Update vip set codestatut = ? where idvip = ?";
+            PreparedStatement pstmt = connexion.prepareStatement(requete);
+            pstmt.setInt(1,codeStatut);
+            pstmt.setInt(2,numVip);
+            pstmt.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println("Erreur sql dans le changement de Statut " + ex.getMessage());
+        }
+    }
+	
     public Boolean insererVip(Vip vip) {
         try {
             String requete = "insert into vip (nom, prenom, civilite, datenaissance, lieunaissance, coderole, codestatut, idnat) values(?,?,?,?,?,?,?,?)";

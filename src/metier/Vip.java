@@ -31,6 +31,10 @@ public class Vip {
         this(num,nom,prenom,null,null,null,null,statut,null);
     }
     
+    public Vip(int num, String nom, String prenom,LocalDate dateNaissance, Statut statut) {
+        this(num,nom,prenom,null,dateNaissance,null,null,statut,null);
+    }
+    
     public static String statutToString(Statut statut) {
         if(statut == Statut.MARIE){
             return "Marié(e)";
@@ -42,9 +46,9 @@ public class Vip {
     }
     
     public static int statutToInt(Statut statut) {
-        if(statut == Statut.MARIE){
+        if(statut == Statut.LIBRE){
             return 1;
-        }else if(statut == Statut.LIBRE){
+        }else if(statut == Statut.MARIE){
             return 2;
         }else{
             return 3;

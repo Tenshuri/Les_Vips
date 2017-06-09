@@ -7,6 +7,7 @@ import application.Appli;
 import data.DAOVip;
 import java.time.ZoneId;
 import metier.Role;
+import metier.Statut;
 import modele.ModeleJComboCivilite;
 
 
@@ -67,7 +68,7 @@ public class FenetreSaisieVip extends javax.swing.JDialog {
         cbNationalite = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Saisie d'un employé");
+        setTitle("Saisie d'un VIP");
         setResizable(false);
         setSize(new java.awt.Dimension(500, 400));
 
@@ -238,6 +239,7 @@ public class FenetreSaisieVip extends javax.swing.JDialog {
         else {
             // SAISIE OK
             vip.setNom(nom);
+            vip.setStatut(Statut.LIBRE);
             vip.setPrenom(prenom);
             vip.setCivilite(civilite);
             vip.setDateNaissance(dateNaissance.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());

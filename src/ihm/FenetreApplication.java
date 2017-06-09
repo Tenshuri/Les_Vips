@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import metier.Vip;
 import modele.ModeleJTable;
 import application.Appli;
+import javax.swing.ImageIcon;
 
 public class FenetreApplication extends javax.swing.JFrame {
 
@@ -12,6 +13,8 @@ public class FenetreApplication extends javax.swing.JFrame {
 
     public FenetreApplication() throws Exception {
         
+        ImageIcon img = new ImageIcon("Icon.png");
+        this.setIconImage(img.getImage());
         
         // instanciation du modele de données de la JTable
         this.leModele = new ModeleJTable();
@@ -39,11 +42,12 @@ public class FenetreApplication extends javax.swing.JFrame {
         laTable = new javax.swing.JTable();
         jpGestion = new javax.swing.JPanel();
         btInserer = new javax.swing.JButton();
-        btSupprimer = new javax.swing.JButton();
         btnModifierVIP = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("VIPs");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -59,19 +63,12 @@ public class FenetreApplication extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(laTable);
 
-        jpGestion.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Gestion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 2, 10))); // NOI18N
+        jpGestion.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Gestion", 0, 0, new java.awt.Font("Tahoma", 2, 10))); // NOI18N
 
         btInserer.setText("Inserer");
         btInserer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btInsererActionPerformed(evt);
-            }
-        });
-
-        btSupprimer.setText("Supprimer");
-        btSupprimer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btSupprimerActionPerformed(evt);
             }
         });
 
@@ -92,9 +89,7 @@ public class FenetreApplication extends javax.swing.JFrame {
                 .addComponent(btInserer, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61)
                 .addComponent(btnModifierVIP)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btSupprimer)
-                .addGap(78, 78, 78))
+                .addContainerGap(486, Short.MAX_VALUE))
         );
         jpGestionLayout.setVerticalGroup(
             jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,10 +97,12 @@ public class FenetreApplication extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btInserer)
-                    .addComponent(btSupprimer)
                     .addComponent(btnModifierVIP))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel1.setText("Liste des VIPs :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,35 +110,27 @@ public class FenetreApplication extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
-                    .addComponent(jpGestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+                        .addComponent(jpGestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jpGestion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSupprimerActionPerformed
-        // TODO add your handling code here:
-        /*int ligne = laTable.getSelectedRow();
-        if (ligne != -1) {
-            try {
-                leModele.supprimerEmploye(ligne);
-            } catch (SQLException e) {
-                System.out.println("Erreur à la suppression : " + e.getMessage());
-            }
-        }*/
-    }//GEN-LAST:event_btSupprimerActionPerformed
 
     private void btInsererActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInsererActionPerformed
         Vip vip = new Vip(0, null, null, null);
@@ -164,20 +153,26 @@ public class FenetreApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnModifierVIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierVIPActionPerformed
+        int ligneSelectionne = laTable.getSelectedRow();
+        //on récupére la valeur de la première colonne de la ligne sélectionné
+        int numero = (int)laTable.getValueAt(ligneSelectionne, 0);
 
-            int ligneSelectionne = laTable.getSelectedRow();
-            //on récupére la valeur de la première colonne de la ligne sélectionné
-            int numero = (int)laTable.getValueAt(ligneSelectionne, 0);
-            
-            FenetreMariageVIP fMariage = null;
+        FenetreMariageVIP fMariage = null;
+        try {
+            fMariage = new FenetreMariageVIP(this,numero);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (fMariage.doModal() == true) {
             try {
-                fMariage = new FenetreMariageVIP(this,numero);
-            }
-            catch (Exception e) {
+                System.out.println("chargement des vips...");
+                leModele.chargerLesVips();
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            fMariage.doModal();
-            
+        }
+        btnModifierVIP.setEnabled(false);
     }//GEN-LAST:event_btnModifierVIPActionPerformed
 
     private void laTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_laTableMouseClicked
@@ -189,8 +184,8 @@ public class FenetreApplication extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btInserer;
-    private javax.swing.JButton btSupprimer;
     private javax.swing.JButton btnModifierVIP;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel jpGestion;
     private javax.swing.JTable laTable;

@@ -24,12 +24,14 @@ public class DAOVip {
         this.connexion = connexion;
     }
     
-
-
-    public void lireLesVips(List<Vip> lesVips) throws Exception {
-        String requete = "select * from vip";
+    public void lireLesVipsLibres(List<Vip> lesVips) throws Exception {
+        String requete = "select * from vip WHERE codestatut = 1";
         PreparedStatement pstmt = connexion.prepareStatement(requete);
         ResultSet rset = pstmt.executeQuery(requete);
+        
+        Map<Integer, String> nats = new HashMap<>();
+        this.getNationalites(nats);
+        
         while (rset.next()) {       // traitement du résulat
             int num = rset.getInt(1);
             String nom = rset.getString(2);
@@ -41,7 +43,7 @@ public class DAOVip {
             Role role = Vip.getRole(rset.getInt(7));
             Statut statut = Vip.getStatut(rset.getInt(8));
             
-            String nationalite = rset.getString(9);
+            String nationalite = nats.get(rset.getInt(9));
                         
             lesVips.add(new Vip(num,  nom, prenom, civilite, 
                                 dateNaissance, lieuNaissance,
@@ -49,6 +51,48 @@ public class DAOVip {
         }
         rset.close();
         pstmt.close();
+    }
+
+    public void lireLesVips(List<Vip> lesVips) throws Exception {
+        String requete = "select * from vip";
+        PreparedStatement pstmt = connexion.prepareStatement(requete);
+        ResultSet rset = pstmt.executeQuery(requete);
+        
+        Map<Integer, String> nats = new HashMap<>();
+        this.getNationalites(nats);
+        
+        while (rset.next()) {       // traitement du résulat
+            int num = rset.getInt(1);
+            String nom = rset.getString(2);
+            String prenom = rset.getString(3);
+            String civilite = rset.getString(4);
+            LocalDate dateNaissance = rset.getDate(5).toLocalDate();
+            String lieuNaissance = rset.getString(6);
+            
+            Role role = Vip.getRole(rset.getInt(7));
+            Statut statut = Vip.getStatut(rset.getInt(8));
+            
+            String nationalite = nats.get(rset.getInt(9));
+                        
+            lesVips.add(new Vip(num,  nom, prenom, civilite, 
+                                dateNaissance, lieuNaissance,
+                                role, statut, nationalite));
+        }
+        rset.close();
+        pstmt.close();
+    }
+    
+    public void supprimerVip(int numeroVip) {
+        String requete = "DELETE FROM vip WHERE idvip = ?";
+        
+        try {
+            PreparedStatement pstmt = connexion.prepareStatement(requete);
+            pstmt.setInt(1, numeroVip);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (Exception e) {
+            
+        }
     }
     
     public void getNationalites(Map<Integer, String> nat) {
@@ -103,7 +147,7 @@ public class DAOVip {
         return corresNat.get(nationalite);
     }
     
-	public Vip lireUnVipMariage(int numero) {
+    public Vip lireUnVipMariage(int numero) {
         try {
             String requete = "select * from vip WHERE idvip = ? ;";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
@@ -115,8 +159,9 @@ public class DAOVip {
             String nom = rset.getString(2);
             String prenom = rset.getString(3);
             Statut statut = Vip.getStatut(rset.getInt(8));
+            LocalDate dateNaissance = rset.getDate(5).toLocalDate();
             
-            Vip vip = new Vip(num,nom,prenom,statut);
+            Vip vip = new Vip(num,nom,prenom,dateNaissance,statut);
             
             rset.close();
             pstmt.close();

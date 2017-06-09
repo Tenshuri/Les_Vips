@@ -1,6 +1,8 @@
 package ihm;
 
 import application.Appli;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -277,12 +279,6 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMariageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMariageActionPerformed
-        /*
-        idvip1 on a.
-        date Mariage a rentrer
-        idvip2 a rentrer en liste déroulante en séléctionnant tous les gens sauf celui de vip1 ok pour  design
-        lieu marriage a rentrer via un textfield
-        */
         int lePartenaire=-1;
         int indexItem = boxVip.getSelectedIndex();
         if (indexItem < 0) {
@@ -290,19 +286,44 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
         }else{
         lePartenaire = leModele.getVipAt(indexItem).getNum();
         }
-        Date dateDivorceVip1 =  Appli.getDaoMariages().dernierDivorce(numero);
-        Date dateDivorceVip2 =  Appli.getDaoMariages().dernierDivorce(lePartenaire);
+        Date dateDivorceTemp;
+        LocalDate dateDivorceVip1;
+        LocalDate dateDivorceVip2;
+        if(datePickerM.getDate() != null) {
         
+        dateDivorceTemp = Appli.getDaoMariages().dernierDivorce(numero);
+        if(dateDivorceTemp != null){
+            dateDivorceVip1 =  dateDivorceTemp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }else{
+            dateDivorceVip1 = null;
+        }
+        
+        dateDivorceTemp = Appli.getDaoMariages().dernierDivorce(lePartenaire);
+        if(dateDivorceTemp != null){
+            dateDivorceVip2 =  dateDivorceTemp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }else{
+            dateDivorceVip2 = null;
+        }
+        LocalDate dateNaissanceVip1 = Appli.getDaoVip().lireUnVipMariage(numero).getDateNaissance();
+        LocalDate dateNaissancePartenaire = Appli.getDaoVip().lireUnVipMariage(lePartenaire).getDateNaissance();
+        LocalDate dateMariageVips = datePickerM.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        //Vérification des dates des anciens divorces pour le nouveau marriage !
         if(  (dateDivorceVip1 == null && dateDivorceVip2 == null) 
-          || (dateDivorceVip1 == null && datePickerM.getDate().compareTo(dateDivorceVip2) > 0)
-          || (dateDivorceVip2 == null && datePickerM.getDate().compareTo(dateDivorceVip1) > 0)
-          ||  (datePickerM.getDate().compareTo(dateDivorceVip1) > 0 
-               && datePickerM.getDate().compareTo(dateDivorceVip2) > 0) ){
-            
-            //Date Valide
-            Appli.getDaoMariages().fraichementMarie(numero, lePartenaire, datePickerM.getDate(), txtLieuMariage.getText());
+          || (dateDivorceVip1 == null && dateMariageVips.compareTo(dateDivorceVip2) > 0)
+          || (dateDivorceVip2 == null && dateMariageVips.compareTo(dateDivorceVip1) > 0)
+          ||  (dateMariageVips.compareTo(dateDivorceVip1) > 0 
+               && dateMariageVips.compareTo(dateDivorceVip2) > 0) ){
+            if(dateMariageVips.isAfter(dateNaissanceVip1.plusYears(18)) && dateMariageVips.isAfter(dateNaissancePartenaire.plusYears(18))){
+                // Date Valide
+                Appli.getDaoMariages().fraichementMarie(numero, lePartenaire, datePickerM.getDate(), txtLieuMariage.getText());
+            }else{
+            JOptionPane.showMessageDialog(this, "Personne Mineure ", "Attention", JOptionPane.WARNING_MESSAGE);    
+            }
         }else{
         JOptionPane.showMessageDialog(this, "La date du Mariage est inférieure à la date d'au moins un des divorce", "Attention", JOptionPane.WARNING_MESSAGE);
+        }
+        }else{
+        JOptionPane.showMessageDialog(this, "La date du Mariage n'a pas été sélectionnée", "Attention", JOptionPane.WARNING_MESSAGE);
         }
         etatSortie = true;
         this.dispose();
@@ -310,17 +331,19 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
 
 //Ajout d'un divorce
     private void btnDivorceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivorceActionPerformed
-        System.out.println(datePickerD.getDate());
-        if(datePickerD.getDate().compareTo(dateMariage)<=0){
-            JOptionPane.showMessageDialog(this, "La date de Divorce est inférieure à la date de Mariage", "Attention", JOptionPane.WARNING_MESSAGE);
+        if(datePickerD.getDate() != null){
+            if(datePickerD.getDate().compareTo(dateMariage)<=0){
+                JOptionPane.showMessageDialog(this, "La date de Divorce est inférieure à la date de Mariage", "Attention", JOptionPane.WARNING_MESSAGE);
+            }else{
+                // Date Valide
+                Appli.getDaoMariages().prepareDivorce(numero,dateMariage,datePickerD.getDate());
+                // Ici on est bon
+                etatSortie = true;
+                this.dispose();
+            }
         }else{
-            System.out.println("Date Valide");
-            Appli.getDaoMariages().prepareDivorce(numero,dateMariage,datePickerD.getDate());
-            // Ici on est bon
-            etatSortie = true;
-            this.dispose();
+            JOptionPane.showMessageDialog(this, "Veuillez selectionner une Date", "Attention", JOptionPane.WARNING_MESSAGE);
         }
-
     }//GEN-LAST:event_btnDivorceActionPerformed
 
 

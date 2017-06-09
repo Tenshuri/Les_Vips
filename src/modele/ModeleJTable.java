@@ -72,6 +72,9 @@ public class ModeleJTable extends AbstractTableModel {
     }
 
     public void chargerLesVips() throws SQLException, Exception {
+        if (leConteneur.isEmpty() == false) {
+            leConteneur.clear();
+        }
         try {
             // chargement de tous les vips dans la base dans le conteneur du modèle
             leDaoVip.lireLesVips(leConteneur);
@@ -80,6 +83,19 @@ public class ModeleJTable extends AbstractTableModel {
         }
         catch (Exception e) {
             System.out.println("jtable :" + e.getMessage());
+        }
+    }
+    
+    public int getNumeroVip(int numLigne) {
+        return Integer.parseInt(this.getValueAt(numLigne, 0).toString());
+    }
+    
+    public void supprimerVip(int numVip) {
+        leDaoVip.supprimerVip(numVip);
+        try {
+            this.chargerLesVips();
+        } catch (Exception e) {
+            //
         }
     }
 }

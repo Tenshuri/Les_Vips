@@ -1,14 +1,12 @@
 package data;
 
+import application.Appli;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import metier.Statut;
-import metier.Vip;
+
 
 public class DAOMariages {
 
@@ -18,27 +16,40 @@ public class DAOMariages {
         this.connexion = connexion;
     }
 
-    public Vip lireUnVipMariage(int numero) {
+    // Concerne les vips avec un mariage un cours
+    // Retourne la date du dernier mariage (celui qui est en cours)
+    public Date getDateMariageEnCours(int numero) {
         try {
-            String requete = "select * from vip WHERE idvip = ? ;";
+           // String requete = "select datemariage from vip V INNER JOIN unionmaritale U ON V.idvip = U.idvip1 WHERE idvip = ? AND datedivorce IS NULL";
+            String requete = "select datemariage from unionmaritale  WHERE idvip1 = ? AND datedivorce IS NULL";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
             pstmt.setInt(1,numero);
-            ResultSet rset = pstmt.executeQuery();
+            ResultSet rset;
+            rset= pstmt.executeQuery();
             rset.next();
-            
-            int num = rset.getInt(1);
-            String nom = rset.getString(2);
-            String prenom = rset.getString(3);
-            Statut statut = Vip.getStatut(rset.getInt(8));
-            
-            Vip vip = new Vip(num,nom,prenom,statut);
-            
+            Date dernDateMariage = rset.getDate(1);
             rset.close();
             pstmt.close();
-            return vip;
+
+            return dernDateMariage;
             
         } catch (SQLException se) {
-            System.out.println("sql " + se.getMessage());
+            try {
+                // Normalement, si on tombe ici, c'est parce que le result set est vide
+                String requete = "select datemariage from unionmaritale  WHERE idvip2 = ? AND datedivorce IS NULL";
+                PreparedStatement pstmt = connexion.prepareStatement(requete);
+                pstmt.setInt(1,numero);
+                ResultSet rset = pstmt.executeQuery();
+                rset.next();
+                
+                Date dernDateMariage2 = rset.getDate(1);
+                rset.close();
+                pstmt.close();
+                
+                return dernDateMariage2;
+            } catch (SQLException ex) {
+                //Logger.getLogger(DAOMariages.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (Exception e) {
            System.out.println(e.getMessage());
         }
@@ -63,7 +74,6 @@ public class DAOMariages {
             rset= pstmt.executeQuery();
             rset.next();
             autreVip = rset.getInt(1);
-            System.out.println("1ere requete : "+autreVip);
             rset.close();
             pstmt.close();
         } catch (SQLException se) {
@@ -77,7 +87,6 @@ public class DAOMariages {
                 rset= pstmt.executeQuery();
                 rset.next();
                 autreVip = rset.getInt(1);
-                System.out.println("2ere requete : "+autreVip);
                 rset.close();
                 pstmt.close();
             } catch (SQLException ex) {
@@ -87,12 +96,10 @@ public class DAOMariages {
            System.out.println(e.getMessage());
         }
         // si on est ici c'est qu'on a récuperer le numéro du vip partenaire futur divocé(e)
-        if(autreVip != -1){
-        System.out.println("avant setDivorce");            
-        setDivorce(numero,autreVip,dateDivorceSql);
-        System.out.println("apres setDivorce");
-        Appli.getDaoVip().changerStatut(numero, 1);
-        Appli.getDaoVip().changerStatut(autreVip, 1);
+        if(autreVip != -1){           
+            setDivorce(numero,autreVip,dateDivorceSql);
+            Appli.getDaoVip().changerStatut(numero, 1);
+            Appli.getDaoVip().changerStatut(autreVip, 1);
         }else{
             System.err.println("Erreur dans la requete de la préparation divorce");
         }
@@ -142,47 +149,5 @@ public class DAOMariages {
         }
             Appli.getDaoVip().changerStatut(id1,2);
             Appli.getDaoVip().changerStatut(id2,2);
-    }
-	
-    // Concerne les vips avec un mariage un cours
-    // Retourne la date du dernier mariage (celui qui est en cours)
-    public Date getDateMariageEnCours(int numero) {
-        try {
-           // String requete = "select datemariage from vip V INNER JOIN unionmaritale U ON V.idvip = U.idvip1 WHERE idvip = ? AND datedivorce IS NULL";
-            String requete = "select datemariage from unionmaritale  WHERE idvip1 = ? AND datedivorce IS NULL";
-            PreparedStatement pstmt = connexion.prepareStatement(requete);
-            pstmt.setInt(1,numero);
-            ResultSet rset;
-            rset= pstmt.executeQuery();
-            rset.next();
-            Date dernDateMariage = rset.getDate(1);
-            System.out.println("1ere requete : "+dernDateMariage);
-            rset.close();
-            pstmt.close();
-
-            return dernDateMariage;
-            
-        } catch (SQLException se) {
-            try {
-                // Normalement, si on tombe ici, c'est parce que le result set est vide
-                String requete = "select datemariage from unionmaritale  WHERE idvip2 = ? AND datedivorce IS NULL";
-                PreparedStatement pstmt = connexion.prepareStatement(requete);
-                pstmt.setInt(1,numero);
-                ResultSet rset = pstmt.executeQuery();
-                rset.next();
-                
-                Date dernDateMariage2 = rset.getDate(1);
-                System.out.println("2ere requete : "+dernDateMariage2);
-                rset.close();
-                pstmt.close();
-                
-                return dernDateMariage2;
-            } catch (SQLException ex) {
-                //Logger.getLogger(DAOMariages.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (Exception e) {
-           System.out.println(e.getMessage());
-        }
-        return null;
     }
 }

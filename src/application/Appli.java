@@ -5,8 +5,6 @@ import data.DAOVip;
 import ihm.FenetreIdentification;
 import ihm.FenetreApplication;
 import data.SourceMariaDB;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.Window;
 import java.net.PasswordAuthentication;
 import java.sql.Connection;

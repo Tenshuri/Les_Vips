@@ -23,7 +23,7 @@ public class ModeleJComboBoxMariage extends DefaultComboBoxModel<String> {
         this.listeVip = new ArrayList<>();
         this.leDaoVip = Appli.getDaoVip();
         try {
-            leDaoVip.lireLesVips(listeVip);
+            leDaoVip.lireLesVipsLibres(listeVip);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -34,7 +34,6 @@ public class ModeleJComboBoxMariage extends DefaultComboBoxModel<String> {
                 listeVip.remove(i);
                 
             }
-            System.out.println(listeVip.get(i).getNom());
         }
 
     }

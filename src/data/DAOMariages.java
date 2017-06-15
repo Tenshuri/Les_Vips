@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.sql.Date;
 
 
 public class DAOMariages {
@@ -18,7 +20,7 @@ public class DAOMariages {
 
     // Concerne les vips avec un mariage un cours
     // Retourne la date du dernier mariage (celui qui est en cours)
-    public Date getDateMariageEnCours(int numero) {
+    public LocalDate getDateMariageEnCours(int numero) {
         try {
            // String requete = "select datemariage from vip V INNER JOIN unionmaritale U ON V.idvip = U.idvip1 WHERE idvip = ? AND datedivorce IS NULL";
             String requete = "select datemariage from unionmaritale  WHERE idvip1 = ? AND datedivorce IS NULL";
@@ -27,7 +29,7 @@ public class DAOMariages {
             ResultSet rset;
             rset= pstmt.executeQuery();
             rset.next();
-            Date dernDateMariage = rset.getDate(1);
+            LocalDate dernDateMariage = rset.getDate(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             rset.close();
             pstmt.close();
 
@@ -42,13 +44,13 @@ public class DAOMariages {
                 ResultSet rset = pstmt.executeQuery();
                 rset.next();
                 
-                Date dernDateMariage2 = rset.getDate(1);
+                LocalDate dernDateMariage2 = rset.getDate(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 rset.close();
                 pstmt.close();
                 
                 return dernDateMariage2;
             } catch (SQLException ex) {
-                //Logger.getLogger(DAOMariages.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.getMessage());
             }
         } catch (Exception e) {
            System.out.println(e.getMessage());
@@ -104,6 +106,7 @@ public class DAOMariages {
             System.err.println("Erreur dans la requete de la préparation divorce");
         }
     }
+    
     public void setDivorce(int vip1,int vip2, java.sql.Date datedivorce) {
         try {
             String requete = "UPDATE unionmaritale Set datedivorce = ? where (idvip1 = ? and idvip2 = ?) or (idvip1 = ? and idvip2 = ?) and datedivorce IS NULL ;";
@@ -119,16 +122,16 @@ public class DAOMariages {
         }
     }
     
-    public Date dernierDivorce(int vip){
+    public LocalDate dernierDivorce(int vip){
         try {
-            String requete = "Select max(datedivorce) where idvip1 = ?  or idvip2 = ?;";
+            String requete = "Select max(datedivorce) from unionmaritale where idvip1 = ?  or idvip2 = ?;";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
             pstmt.setInt(1,vip);
             pstmt.setInt(2,vip);
             ResultSet rset;
             rset= pstmt.executeQuery();
             rset.next();
-            return rset.getDate(1);
+            return rset.getDate(1).toLocalDate();
         } catch (SQLException ex) {
             return null;
         }

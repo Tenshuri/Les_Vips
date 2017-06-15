@@ -3,7 +3,7 @@ package ihm;
 import application.Appli;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
+import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -14,24 +14,24 @@ import modele.ModeleJComboBoxMariage;
 public class FenetreMariageVIP extends javax.swing.JDialog {
 
     private Vip vip;
-    private Date dateMariage;
+    private LocalDate dateMariage;
     private int numero;
     private boolean etatSortie;
     private ModeleJComboBoxMariage leModele;
 
     public FenetreMariageVIP(java.awt.Frame parent, int numero) {
-  
+
         super(parent, true);  // mode modal 
         this.setLocation(parent.getLocation());
         this.numero = numero;
         etatSortie = false;
-      
-        try {        
+
+        try {
             leModele = new ModeleJComboBoxMariage(numero);
         } catch (Exception ex) {
             Logger.getLogger(FenetreMariageVIP.class.getName()).log(Level.SEVERE, null, ex);
         }
-        initComponents(); 
+        initComponents();
         try {
             boxVip.setSelectedIndex(0);
             vip = Appli.getDaoVip().lireUnVipMariage(numero);
@@ -39,29 +39,28 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
             txtNom.setText(vip.getNom());
             System.out.println(dateMariage);
             txtPrenom.setText(vip.getPrenom());
-            
+
             Statut statut = vip.getStatut();
             txtStatut.setText(Vip.statutToString(statut));
-            
-            if (vip.getStatut()==Statut.LIBRE){
+
+            if (vip.getStatut() == Statut.LIBRE) {
                 btnMariage.setEnabled(true);
                 datePickerM.setEnabled(true);
                 txtLieuMariage.setEnabled(true);
                 boxVip.setEnabled(true);
-                
-            }else if(vip.getStatut()==Statut.MARIE){
+
+            } else if (vip.getStatut() == Statut.MARIE) {
                 btnDivorce.setEnabled(true);
                 datePickerD.setEnabled(true);
-                
+
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     public boolean doModal() {
-        setVisible(true);  
+        setVisible(true);
         return etatSortie;
     }
 
@@ -278,70 +277,85 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // TODO: rectifier les conditions.
     private void btnMariageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMariageActionPerformed
-        int lePartenaire=-1;
-        int indexItem = boxVip.getSelectedIndex();
-        if (indexItem < 0) {
-               System.out.println("Il faut choisir un Partenaire");
-        }else{
-        lePartenaire = leModele.getVipAt(indexItem).getNum();
+        int lePartenaire = -1;
+        // Partnaire sélectionné(e) ?
+        int itemIndex = boxVip.getSelectedIndex();
+        if (itemIndex >= 0) {
+            lePartenaire = leModele.getVipAt(itemIndex).getNum();
+        } else {
+            return;
         }
-        Date dateDivorceTemp;
+
         LocalDate dateDivorceVip1;
         LocalDate dateDivorceVip2;
-        if(datePickerM.getDate() != null) {
-        
-        dateDivorceTemp = Appli.getDaoMariages().dernierDivorce(numero);
-        if(dateDivorceTemp != null){
-            dateDivorceVip1 =  dateDivorceTemp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        }else{
-            dateDivorceVip1 = null;
-        }
-        
-        dateDivorceTemp = Appli.getDaoMariages().dernierDivorce(lePartenaire);
-        if(dateDivorceTemp != null){
-            dateDivorceVip2 =  dateDivorceTemp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        }else{
-            dateDivorceVip2 = null;
-        }
         LocalDate dateNaissanceVip1 = Appli.getDaoVip().lireUnVipMariage(numero).getDateNaissance();
         LocalDate dateNaissancePartenaire = Appli.getDaoVip().lireUnVipMariage(lePartenaire).getDateNaissance();
-        LocalDate dateMariageVips = datePickerM.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        //Vérification des dates des anciens divorces pour le nouveau marriage !
-        if(  (dateDivorceVip1 == null && dateDivorceVip2 == null) 
-          || (dateDivorceVip1 == null && dateMariageVips.compareTo(dateDivorceVip2) > 0)
-          || (dateDivorceVip2 == null && dateMariageVips.compareTo(dateDivorceVip1) > 0)
-          ||  (dateMariageVips.compareTo(dateDivorceVip1) > 0 
-               && dateMariageVips.compareTo(dateDivorceVip2) > 0) ){
-            if(dateMariageVips.isAfter(dateNaissanceVip1.plusYears(18)) && dateMariageVips.isAfter(dateNaissancePartenaire.plusYears(18))){
-                // Date Valide
-                Appli.getDaoMariages().fraichementMarie(numero, lePartenaire, datePickerM.getDate(), txtLieuMariage.getText());
-            }else{
-            JOptionPane.showMessageDialog(this, "Personne Mineure ", "Attention", JOptionPane.WARNING_MESSAGE);    
+        LocalDate dateMariageDemandee = datePickerM.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate dateMariageVip1 = Appli.getDaoMariages().getDateMariageEnCours(numero);
+        LocalDate dateMariagePartenaire = Appli.getDaoMariages().getDateMariageEnCours(lePartenaire);
+
+        if (datePickerM.getDate() != null) {
+
+            dateDivorceVip1 = Appli.getDaoMariages().dernierDivorce(numero);
+            dateDivorceVip2 = Appli.getDaoMariages().dernierDivorce(lePartenaire);
+
+//            if (dateDivorceVip1 == null) {
+//                System.out.println("dateDivvip1 null");
+//            }
+            if (dateMariageDemandee.isAfter(dateDivorceVip1)) {
+                verifierMariagePartenaire(dateMariageDemandee, dateDivorceVip2, dateNaissanceVip1, dateNaissancePartenaire, dateMariagePartenaire, lePartenaire);
+            } else {
+                JOptionPane.showMessageDialog(this, "La date du Mariage est incorrecte", "Attention", JOptionPane.WARNING_MESSAGE);
             }
-        }else{
-        JOptionPane.showMessageDialog(this, "La date du Mariage est inférieure à la date d'au moins un des divorce", "Attention", JOptionPane.WARNING_MESSAGE);
-        }
-        }else{
-        JOptionPane.showMessageDialog(this, "La date du Mariage n'a pas été sélectionnée", "Attention", JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "La date du Mariage n'a pas été sélectionnée", "Attention", JOptionPane.WARNING_MESSAGE);
         }
         etatSortie = true;
         this.dispose();
     }//GEN-LAST:event_btnMariageActionPerformed
 
+    private void verifierMariagePartenaire(LocalDate dateMariageDemandee, LocalDate dateDivorceVip2,
+            LocalDate dateNaissanceVip1, LocalDate dateNaissancePartenaire, LocalDate dateMariagePartenaire,
+            int lePartenaire) {
+        // Vérifie si la date demandée est apres la date de Divorce Vip2 Ou regarde si VIP2 a été marié
+        if (dateMariageDemandee.isAfter(dateDivorceVip2)) {
+            verifierMajorite(dateMariageDemandee, dateNaissanceVip1, dateNaissancePartenaire, lePartenaire);
+        } else if (dateMariagePartenaire == null) {
+            verifierMajorite(dateMariageDemandee, dateNaissanceVip1, dateNaissancePartenaire, lePartenaire);
+        } else {
+            JOptionPane.showMessageDialog(this, "La date du Mariage est incorrecte", "Attention", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void verifierMajorite(LocalDate dateMariageDemandee, LocalDate dateNaissanceVip1, LocalDate dateNaissancePartenaire, int lePartenaire) {
+        if (dateMariageDemandee.isAfter(dateNaissanceVip1.plusYears(18))
+                && dateMariageDemandee.isAfter(dateNaissancePartenaire.plusYears(18))) {
+            // Date Valide
+            Appli.getDaoMariages().fraichementMarie(numero, lePartenaire, java.sql.Date.valueOf(dateMariageDemandee), txtLieuMariage.getText());
+        } else {
+            JOptionPane.showMessageDialog(this, "Personne Mineure ", "Attention", JOptionPane.WARNING_MESSAGE);
+        }
+    }
 //Ajout d'un divorce
     private void btnDivorceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivorceActionPerformed
-        if(datePickerD.getDate() != null){
-            if(datePickerD.getDate().compareTo(dateMariage)<=0){
+        LocalDate dateDivorceDemandee = datePickerD.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        dateMariage = Appli.getDaoMariages().getDateMariageEnCours(numero);
+        if (datePickerD.getDate() != null) {
+            if (dateMariage == null) {
+                System.out.println(numero);
+            }
+            if (dateDivorceDemandee.isAfter(dateMariage)) {
                 JOptionPane.showMessageDialog(this, "La date de Divorce est inférieure à la date de Mariage", "Attention", JOptionPane.WARNING_MESSAGE);
-            }else{
+            } else {
                 // Date Valide
-                Appli.getDaoMariages().prepareDivorce(numero,dateMariage,datePickerD.getDate());
+                Appli.getDaoMariages().prepareDivorce(numero, java.sql.Date.valueOf(dateMariage), java.sql.Date.valueOf(dateDivorceDemandee));
                 // Ici on est bon
                 etatSortie = true;
                 this.dispose();
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Veuillez selectionner une Date", "Attention", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnDivorceActionPerformed

@@ -102,7 +102,9 @@
                   <Component id="btInserer" min="-2" pref="84" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                   <Component id="btnModifierVIP" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="486" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="btPhoto" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -113,6 +115,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btInserer" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnModifierVIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btPhoto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="26" max="32767" attributes="0"/>
               </Group>
@@ -135,6 +138,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModifierVIPActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btPhoto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Photos"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btPhotoActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

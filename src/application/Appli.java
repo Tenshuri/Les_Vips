@@ -1,6 +1,8 @@
 package application;
 
+import data.DAOApparaitre;
 import data.DAOMariages;
+import data.DAOPhoto;
 import data.DAOVip;
 import ihm.FenetreIdentification;
 import ihm.FenetreApplication;
@@ -19,10 +21,20 @@ public class Appli {
     // réfrences sur les DAO utilisés par l'application
     private static DAOVip daoVip;
     private static DAOMariages daoMariages;
+    private static DAOPhoto daoPhoto;
+    private static DAOApparaitre daoApparaitre;
 
     // les accesseurs aux DAO utilisés par l'application
     public static DAOVip getDaoVip() {
         return daoVip;
+    }
+    
+    public static DAOPhoto getDaoPhoto() {
+        return daoPhoto;
+    }
+    
+    public static DAOApparaitre getDaoApparaitre() {
+        return daoApparaitre;
     }
 
     public static DAOMariages getDaoMariages() {
@@ -66,6 +78,8 @@ public class Appli {
             // les DAO nécessaires
             daoVip = new DAOVip(laConnexion);
             daoMariages = new DAOMariages(laConnexion);
+            daoPhoto = new DAOPhoto(laConnexion);
+            daoApparaitre = new DAOApparaitre(laConnexion);
 
             // la fenetre principale de l'application qui tourne dans l'EDT
             javax.swing.SwingUtilities.invokeLater(new Runnable() {

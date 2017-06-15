@@ -43,6 +43,7 @@ public class FenetreApplication extends javax.swing.JFrame {
         jpGestion = new javax.swing.JPanel();
         btInserer = new javax.swing.JButton();
         btnModifierVIP = new javax.swing.JButton();
+        btPhoto = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -63,7 +64,7 @@ public class FenetreApplication extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(laTable);
 
-        jpGestion.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Gestion", 0, 0, new java.awt.Font("Tahoma", 2, 10))); // NOI18N
+        jpGestion.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Gestion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 2, 10))); // NOI18N
 
         btInserer.setText("Inserer");
         btInserer.addActionListener(new java.awt.event.ActionListener() {
@@ -80,6 +81,13 @@ public class FenetreApplication extends javax.swing.JFrame {
             }
         });
 
+        btPhoto.setText("Photos");
+        btPhoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btPhotoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpGestionLayout = new javax.swing.GroupLayout(jpGestion);
         jpGestion.setLayout(jpGestionLayout);
         jpGestionLayout.setHorizontalGroup(
@@ -89,7 +97,9 @@ public class FenetreApplication extends javax.swing.JFrame {
                 .addComponent(btInserer, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61)
                 .addComponent(btnModifierVIP)
-                .addContainerGap(486, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addComponent(btPhoto)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpGestionLayout.setVerticalGroup(
             jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,7 +107,8 @@ public class FenetreApplication extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btInserer)
-                    .addComponent(btnModifierVIP))
+                    .addComponent(btnModifierVIP)
+                    .addComponent(btPhoto))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -182,8 +193,18 @@ public class FenetreApplication extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_laTableMouseClicked
 
+    private void btPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPhotoActionPerformed
+        try {
+            FenetrePhoto ajoutPhoto = new FenetrePhoto(this);
+            ajoutPhoto.doModal();
+        } catch (Exception ex) {
+            System.out.println(" Erreur au chargement : " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btPhotoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btInserer;
+    private javax.swing.JButton btPhoto;
     private javax.swing.JButton btnModifierVIP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

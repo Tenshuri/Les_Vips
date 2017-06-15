@@ -52,7 +52,7 @@ public class FenetrePhoto extends javax.swing.JFrame {
         laTablePhoto.setModel(leModele);
         jScrollPane1.setViewportView(laTablePhoto);
 
-        btAjoutVIP.setText("Ajouter VIP");
+        btAjoutVIP.setText("Faire apparaître un VIP");
         btAjoutVIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAjoutVIPActionPerformed(evt);
@@ -83,8 +83,8 @@ public class FenetrePhoto extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(btAjoutVIP, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addComponent(btAjoutVIP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(btAjoutPhoto)
                 .addGap(48, 48, 48))
             .addGroup(layout.createSequentialGroup()

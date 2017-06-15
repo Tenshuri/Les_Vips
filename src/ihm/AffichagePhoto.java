@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ihm;
 
+import java.awt.Image;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-/**
- *
- * @author p1512264
- */
 public class AffichagePhoto extends javax.swing.JDialog {
 
     /**
@@ -18,6 +12,7 @@ public class AffichagePhoto extends javax.swing.JDialog {
      */
     public AffichagePhoto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.setLocationRelativeTo(parent);
         initComponents();
     }
 
@@ -49,7 +44,15 @@ public class AffichagePhoto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     public boolean doModal(String cheminPhoto) {
-        ImageIcon img = new ImageIcon(cheminPhoto);
+        // Télécharger la photo
+        Image image = null;
+        try {
+            URL url = new URL("http://iutdoua-web.univ-lyon1.fr/~p1205854/vips/photos/" + cheminPhoto);
+            image = ImageIO.read(url);
+        } catch (Exception e) {
+            return false;
+        }
+        ImageIcon img = new ImageIcon(image);
         photoLabel.setIcon(img);
         setVisible(true);
         return true;

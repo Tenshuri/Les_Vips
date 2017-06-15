@@ -40,8 +40,8 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-              <Component id="btAjoutVIP" min="-2" pref="99" max="-2" attributes="0"/>
-              <EmptySpace pref="79" max="32767" attributes="0"/>
+              <Component id="btAjoutVIP" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="35" max="32767" attributes="0"/>
               <Component id="btAjoutPhoto" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
           </Group>
@@ -88,7 +88,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="btAjoutVIP">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ajouter VIP"/>
+        <Property name="text" type="java.lang.String" value="Faire appara&#xee;tre un VIP"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAjoutVIPActionPerformed"/>

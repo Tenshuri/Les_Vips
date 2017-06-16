@@ -6,10 +6,6 @@ import java.util.Properties;
 import javax.sql.DataSource;
 import org.mariadb.jdbc.MariaDbDataSource;
 
-/**
- *
- * @author Alain
- */
 public class SourceMariaDB {
     
     public static DataSource getSource(PasswordAuthentication login) throws Exception {

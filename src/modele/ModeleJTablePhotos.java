@@ -53,6 +53,9 @@ public class ModeleJTablePhotos extends AbstractTableModel {
             case 1:
                 return photo.getLieu();
             case 2:
+                if (photo.getAnnee() == 0) {
+                    return "Inconnue";
+                }
                 return photo.getAnnee();
             case 3:
                 return photo.getChemin();
@@ -67,6 +70,9 @@ public class ModeleJTablePhotos extends AbstractTableModel {
 
     public void chargerLesPhotos() throws SQLException, Exception {
         try {
+            if (leConteneur.isEmpty() == false) {
+                leConteneur.clear();
+            }
             // chargement de tous les photos dans la base dans le conteneur du modèle
             leDaoPhoto.lireLesPhotos(leConteneur);
             // si c'est OK on rafraichit la vue par une notification  

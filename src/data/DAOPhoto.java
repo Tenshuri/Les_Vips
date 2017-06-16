@@ -33,13 +33,17 @@ public class DAOPhoto {
     }
     
     public void ajouterPhoto(Photo photo) throws SQLException {
-        String requete = "insert into photo(idphoto, lieu, annee, chemin) values(?,?,?,?);";
+        String requete = "insert into photo(lieu, annee, chemin) values(?,?,?);";
         PreparedStatement pstmt = connexion.prepareStatement(requete);
-        pstmt.setInt(1, photo.getIdphoto());
-        pstmt.setString(2, photo.getLieu());
-        pstmt.setInt(3, photo.getAnnee());
-        pstmt.setString(4, photo.getChemin());
+        pstmt.setString(1, photo.getLieu());
+        pstmt.setInt(2, photo.getAnnee());
+        pstmt.setString(3, photo.getChemin());
         pstmt.executeUpdate();
+        // Récupérer l'id de la photo
+        ResultSet genKeys = pstmt.getGeneratedKeys();
+        genKeys.next();
+        photo.setIdphoto(genKeys.getInt(1));
+        
         pstmt.close();
     }
     

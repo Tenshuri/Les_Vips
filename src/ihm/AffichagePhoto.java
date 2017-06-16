@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class AffichagePhoto extends javax.swing.JDialog {
 
@@ -54,6 +55,8 @@ public class AffichagePhoto extends javax.swing.JDialog {
         }
         ImageIcon img = new ImageIcon(image);
         photoLabel.setIcon(img);
+        // Redimensionner à la taille de la photo
+        this.setSize(img.getIconWidth(), img.getIconHeight());
         setVisible(true);
         return true;
     }

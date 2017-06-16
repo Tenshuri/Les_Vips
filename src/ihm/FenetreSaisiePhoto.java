@@ -1,16 +1,18 @@
 package ihm;
 
+import java.io.File;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import metier.Photo;
-import java.time.DateTimeException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFileChooser;
 import metier.Apparaitre;
-import metier.Vip;
-import modele.ModeleJComboBox;
 import modele.ModeleJTable;
 import modele.ModeleJTablePhotos;
 
@@ -21,6 +23,7 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
     //private ModeleJComboBox leModele;
     private ModeleJTable leModeleTable;
     private ModeleJTablePhotos leModeleTPhoto;
+    private String cheminLong = null;
     private Apparaitre app;
 
     public FenetreSaisiePhoto(java.awt.Frame parent, Photo photo, Apparaitre app) throws Exception {
@@ -42,6 +45,45 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
         setVisible(true);
         return etatSortie;
     }
+    
+    // Méhode d'envoi d'une photo à l'aide du script d'upload php du site VIP
+    public void sendPhoto(String chemin) {
+        String url = "http://iutdoua-web.univ-lyon1.fr/~p1205854/vips/index.php?page=upload";
+        String charset = "UTF-8";
+        String param = "fileToUpload";
+        File binaryFile = new File(chemin);
+        String boundary = Long.toHexString(System.currentTimeMillis());
+        String CRLF = "\r\n";
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            OutputStream output = connection.getOutputStream();
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
+            // Envoi du paramètre
+            writer.append("--" + boundary).append(CRLF);
+            writer.append("Content-Disposition: form-data; name=\"param\"").append(CRLF);
+            writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF);
+            writer.append(CRLF).append(param).append(CRLF).flush();
+            // Envoi du fichier
+            writer.append("--" + boundary).append(CRLF);
+            writer.append("Content-Disposition: form-data; name=\"binaryFile\"; filename=\"" + binaryFile.getName() + "\"").append(CRLF);
+            writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
+            writer.append("Content-Transfer-Encoding: binary").append(CRLF);
+            writer.append(CRLF).flush();
+            Files.copy(binaryFile.toPath(), output);
+            output.flush();
+            writer.append(CRLF).flush();
+
+            writer.append("--" + boundary + "--").append(CRLF).flush();
+            int responseCode = ((HttpURLConnection) connection).getResponseCode();
+            System.out.println(responseCode); // 200 Si OK.
+        } catch (Exception e) {
+            //
+        }
+
+
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -49,8 +91,6 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
 
         txtLieu = new javax.swing.JTextField();
         txtImages = new javax.swing.JTextField();
-        txtIdPhoto = new javax.swing.JTextField();
-        lbIdPhoto = new javax.swing.JLabel();
         lbLieu = new javax.swing.JLabel();
         btValid = new javax.swing.JButton();
         lbImages = new javax.swing.JLabel();
@@ -69,8 +109,6 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
         setResizable(false);
         setSize(new java.awt.Dimension(0, 0));
 
-        lbIdPhoto.setText("ID Photo :");
-
         lbLieu.setText("Lieu :");
 
         btValid.setText("Valider");
@@ -80,7 +118,7 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
             }
         });
 
-        lbImages.setText(" Images :");
+        lbImages.setText(" Image :");
 
         lbAnnee.setText("Année :");
 
@@ -117,14 +155,11 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(lbLieu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lbImages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lbIdPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(lbImages, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtIdPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-                                            .addComponent(txtImages))
+                                        .addComponent(txtImages, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(61, 61, 61)
                                         .addComponent(btParcourir))
                                     .addComponent(txtLieu, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -158,11 +193,7 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
                     .addComponent(lbImages)
                     .addComponent(txtImages, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btParcourir))
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbIdPhoto)
-                    .addComponent(txtIdPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtLieu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbLieu))
@@ -200,13 +231,6 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
             }
             photo.setChemin(image);
             
-            // validation saisie du ID de photo
-            String idphoto = txtIdPhoto.getText();
-            if (idphoto.isEmpty()) {
-                throw new Exception("champ idPhoto vide");
-            }
-            photo.setIdphoto(Integer.parseInt(idphoto));
-            
             // validation saisie du lieu de photo
             String leLieu = txtLieu.getText();
             if (leLieu.isEmpty()) {
@@ -229,7 +253,9 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
             int leVip = leModeleTable.getNumeroVip(indexItem);
             //int lePhoto = leModeleTPhoto.getNumPhoto(indexItem);
             app.setIdVip(leVip);
-            app.setIdPhoto(Integer.parseInt(idphoto));
+            
+            // upload photo
+            this.sendPhoto(cheminLong);
             
             etatSortie = true;
             this.dispose();
@@ -251,8 +277,8 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
         {
             //txtImages.setText(chooser.getSelectedFile().getAbsolutePath());
             //txtImages.setText(chooser.getSelectedFile().getName());
-            chemin = chooser.getSelectedFile().getName();
-            txtImages.setText(chemin);
+            cheminLong = chooser.getSelectedFile().getAbsolutePath();
+            txtImages.setText(chooser.getSelectedFile().getName());
         }   
     }//GEN-LAST:event_btParcourirActionPerformed
 
@@ -276,14 +302,12 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable laTable;
     private javax.swing.JLabel lbAnnee;
-    private javax.swing.JLabel lbIdPhoto;
     private javax.swing.JLabel lbImages;
     private javax.swing.JLabel lbLieu;
     private javax.swing.JLabel lbNumVip;
     private javax.swing.JLabel lbSelection;
     private javax.swing.JLabel lbVip;
     private javax.swing.JTextField txtAnnee;
-    private javax.swing.JTextField txtIdPhoto;
     private javax.swing.JTextField txtImages;
     private javax.swing.JTextField txtLieu;
     // End of variables declaration//GEN-END:variables

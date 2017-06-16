@@ -1,6 +1,8 @@
 package ihm;
 
+import application.Appli;
 import java.awt.Frame;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,6 +45,7 @@ public class FenetrePhoto extends javax.swing.JFrame {
         btAjoutVIP = new javax.swing.JButton();
         btAjoutPhoto = new javax.swing.JButton();
         btAffPhoto = new javax.swing.JButton();
+        lblInfo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Liste les photos");
@@ -90,6 +93,8 @@ public class FenetrePhoto extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(140, 140, 140)
                 .addComponent(btAffPhoto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblInfo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -98,7 +103,9 @@ public class FenetrePhoto extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13)
-                .addComponent(btAffPhoto)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btAffPhoto)
+                    .addComponent(lblInfo))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btAjoutPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -131,16 +138,21 @@ public class FenetrePhoto extends javax.swing.JFrame {
     }
 
     private void btAjoutPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAjoutPhotoActionPerformed
-        // TODO add your handling code here:
+        // Faire l'ajout dans une transaction
+        Connection c = Appli.getLaConnexion();
         try {
+            c.setAutoCommit(false);
             Photo photo = new Photo();
             Apparaitre app = new Apparaitre();
             FenetreSaisiePhoto laSaisiePhoto = new FenetreSaisiePhoto(this, photo, app);
             if (laSaisiePhoto.doModal() == true) {
-//                leModele.ajouterPhoto(photo,app);
                 leModele.ajouterPhoto(photo);
+                app.setIdPhoto(photo.getIdphoto());
                 leModele.ajouterApp(app);
+                leModele.chargerLesPhotos();
             }
+            c.commit();
+            c.setAutoCommit(true);
         } catch (SQLException e) {
             System.out.println("Erreur à ajouter : " + e.getMessage());
         } catch (Exception ex) {
@@ -180,5 +192,6 @@ public class FenetrePhoto extends javax.swing.JFrame {
     private javax.swing.JButton btAjoutVIP;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable laTablePhoto;
+    private javax.swing.JLabel lblInfo;
     // End of variables declaration//GEN-END:variables
 }

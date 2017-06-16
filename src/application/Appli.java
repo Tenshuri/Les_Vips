@@ -23,6 +23,7 @@ public class Appli {
     private static DAOMariages daoMariages;
     private static DAOPhoto daoPhoto;
     private static DAOApparaitre daoApparaitre;
+    private static Connection laConnexion;
 
     // les accesseurs aux DAO utilisés par l'application
     public static DAOVip getDaoVip() {
@@ -45,11 +46,17 @@ public class Appli {
         frame.setLocationRelativeTo( null );
     }
 
+    public static Connection getLaConnexion() {
+        return laConnexion;
+    }
+    
+    
+
     // le point d'entré du programme
     public static void main(String[] args) {
         // les variables locales
         DataSource laSourceDeDonnees;   // la sourde de données
-        Connection laConnexion = null;  // la connexion
+        laConnexion = null;  // la connexion
         
         // Look and Feel windows
         try {

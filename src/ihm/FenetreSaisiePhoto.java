@@ -1,20 +1,25 @@
 package ihm;
 
-import java.io.File;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Files;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
-import metier.Photo;
-import javax.swing.JFileChooser;
 import metier.Apparaitre;
+import metier.Photo;
 import modele.ModeleJTable;
 import modele.ModeleJTablePhotos;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.util.EntityUtils;
+
+import javax.swing.*;
+import java.io.File;
+import java.net.URLConnection;
+import java.sql.SQLException;
 
 public class FenetreSaisiePhoto extends javax.swing.JDialog {
 
@@ -44,45 +49,6 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
     public boolean doModal() {
         setVisible(true);
         return etatSortie;
-    }
-    
-    // Méhode d'envoi d'une photo à l'aide du script d'upload php du site VIP
-    public void sendPhoto(String chemin) {
-        String url = "http://iutdoua-web.univ-lyon1.fr/~p1205854/vips/index.php?page=upload";
-        String charset = "UTF-8";
-        String param = "fileToUpload";
-        File binaryFile = new File(chemin);
-        String boundary = Long.toHexString(System.currentTimeMillis());
-        String CRLF = "\r\n";
-        try {
-            URLConnection connection = new URL(url).openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-            OutputStream output = connection.getOutputStream();
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
-            // Envoi du paramètre
-            writer.append("--" + boundary).append(CRLF);
-            writer.append("Content-Disposition: form-data; name=\"param\"").append(CRLF);
-            writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF);
-            writer.append(CRLF).append(param).append(CRLF).flush();
-            // Envoi du fichier
-            writer.append("--" + boundary).append(CRLF);
-            writer.append("Content-Disposition: form-data; name=\"binaryFile\"; filename=\"" + binaryFile.getName() + "\"").append(CRLF);
-            writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
-            writer.append("Content-Transfer-Encoding: binary").append(CRLF);
-            writer.append(CRLF).flush();
-            Files.copy(binaryFile.toPath(), output);
-            output.flush();
-            writer.append(CRLF).flush();
-
-            writer.append("--" + boundary + "--").append(CRLF).flush();
-            int responseCode = ((HttpURLConnection) connection).getResponseCode();
-            System.out.println(responseCode); // 200 Si OK.
-        } catch (Exception e) {
-            //
-        }
-
-
     }
 
     @SuppressWarnings("unchecked")
@@ -221,8 +187,28 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+        // Envoyer une image sur le serveur web, avec une requête HTTP POST
+        // (Sur un formulaire PHP d'upload dédié
+    private static void postImage(String cheminImage) {
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+            HttpPost httppost = new HttpPost("http://iutdoua-web.univ-lyon1.fr/~p1205854/vips/index.php?page=upload");
+            File file = new File(cheminImage);
+            MultipartEntity mpEntity = new MultipartEntity();
+            ContentBody cbFile = new FileBody(file, URLConnection.guessContentTypeFromName(file.getName()));
+            mpEntity.addPart("fileToUpload", cbFile);
+            httppost.setEntity(mpEntity);
+
+            // Exécuter la requête et fermer la connexion
+            HttpResponse response = httpclient.execute(httppost);
+            httpclient.getConnectionManager().shutdown();
+        } catch (Exception e) {
+            System.out.println("Exception : " + e.getMessage());
+        }
+    }
+
     private void btValidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btValidActionPerformed
-        // TODO add your handling code here:
         try {
             // validation saisie du l'image          
             String image = txtImages.getText();
@@ -255,8 +241,8 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
             app.setIdVip(leVip);
             
             // upload photo
-            this.sendPhoto(cheminLong);
-            
+            postImage(cheminLong);
+
             etatSortie = true;
             this.dispose();
         } catch (Exception e) {

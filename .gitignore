@@ -1,4 +1,7 @@
 build/
+CPOA.iml
+out/
+.idea/
 /dist/
 web/vendor/
 web/.idea/

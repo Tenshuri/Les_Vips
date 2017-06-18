@@ -3,22 +3,18 @@ package modele;
 
 import application.Appli;
 import data.DAOVip;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 import metier.Vip;
 
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- *
- * @author Administrateur
- */
+
 public class ModeleJComboBoxMariage extends DefaultComboBoxModel<String> {
 
-        private final List<Vip> listeVip;
-        private final DAOVip leDaoVip;
-        
+    private final List<Vip> listeVip;
+    private final DAOVip leDaoVip;
+
     public ModeleJComboBoxMariage(int numero) {
         this.listeVip = new ArrayList<>();
         this.leDaoVip = Appli.getDaoVip();
@@ -27,17 +23,17 @@ public class ModeleJComboBoxMariage extends DefaultComboBoxModel<String> {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
-        for (int i = 0 ; i< listeVip.size();i++) {
-            if(listeVip.get(i).getNum()== numero){
-                
+
+        for (int i = 0; i < listeVip.size(); i++) {
+            if (listeVip.get(i).getNum() == numero) {
+
                 listeVip.remove(i);
-                
+
             }
         }
 
     }
-    
+
     @Override
     public int getSize() {
         return listeVip.size();
@@ -48,10 +44,10 @@ public class ModeleJComboBoxMariage extends DefaultComboBoxModel<String> {
         return listeVip.get(i).getNom() + " " +
                 listeVip.get(i).getPrenom();
     }
-    
+
     public Vip getVipAt(int i) {
         return listeVip.get(i);
     }
-    
+
 } // Fin classe ModeleJComboBoxMariage
 

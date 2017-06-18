@@ -2,16 +2,13 @@ package modele;
 
 import application.Appli;
 import data.DAOVip;
+import metier.Vip;
+
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import metier.Vip;
 
-/**
- *
- * @author Administrateur
- */
 public class ModeleJComboBox extends DefaultComboBoxModel<String> {
 
     private final List<Vip> listeItems;

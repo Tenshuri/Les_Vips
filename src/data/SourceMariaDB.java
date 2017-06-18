@@ -1,13 +1,14 @@
 package data;
 
+import org.mariadb.jdbc.MariaDbDataSource;
+
+import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.net.PasswordAuthentication;
 import java.util.Properties;
-import javax.sql.DataSource;
-import org.mariadb.jdbc.MariaDbDataSource;
 
 public class SourceMariaDB {
-    
+
     public static DataSource getSource(PasswordAuthentication login) throws Exception {
         // récupération des informations d'authentification
         String user = login.getUserName();

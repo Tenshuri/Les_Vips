@@ -1,20 +1,15 @@
 package application;
 
-import data.DAOApparaitre;
-import data.DAOMariages;
-import data.DAOPhoto;
-import data.DAOVip;
-import ihm.FenetreIdentification;
+import data.*;
 import ihm.FenetreApplication;
-import data.SourceMariaDB;
-import java.awt.Window;
+import ihm.FenetreIdentification;
+
+import javax.sql.DataSource;
+import javax.swing.*;
+import java.awt.*;
 import java.net.PasswordAuthentication;
 import java.sql.Connection;
 import java.sql.SQLException;
-import javax.sql.DataSource;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 
 public class Appli {
@@ -29,11 +24,11 @@ public class Appli {
     public static DAOVip getDaoVip() {
         return daoVip;
     }
-    
+
     public static DAOPhoto getDaoPhoto() {
         return daoPhoto;
     }
-    
+
     public static DAOApparaitre getDaoApparaitre() {
         return daoApparaitre;
     }
@@ -41,23 +36,22 @@ public class Appli {
     public static DAOMariages getDaoMariages() {
         return daoMariages;
     }
-    
+
     public static void centreWindow(Window frame) {
-        frame.setLocationRelativeTo( null );
+        frame.setLocationRelativeTo(null);
     }
 
     public static Connection getLaConnexion() {
         return laConnexion;
     }
-    
-    
+
 
     // le point d'entré du programme
     public static void main(String[] args) {
         // les variables locales
         DataSource laSourceDeDonnees;   // la sourde de données
         laConnexion = null;  // la connexion
-        
+
         // Look and Feel windows
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -94,8 +88,7 @@ public class Appli {
                 public void run() {
                     try {
                         new FenetreApplication().setVisible(true);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         System.out.println("---");
                     }
                 }

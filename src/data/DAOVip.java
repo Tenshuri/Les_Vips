@@ -1,5 +1,9 @@
 package data;
 
+import metier.Role;
+import metier.Statut;
+import metier.Vip;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,14 +12,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import metier.Role;
-import metier.Statut;
-import metier.Vip;
 
-/**
- *
- * @author Alain
- */
 public class DAOVip {
 
     private final Connection connexion;
@@ -23,15 +20,15 @@ public class DAOVip {
     public DAOVip(Connection connexion) throws SQLException {
         this.connexion = connexion;
     }
-    
+
     public void lireLesVipsLibres(List<Vip> lesVips) throws Exception {
-        String requete = "select * from vip WHERE codestatut = 1";
+        String requete = "SELECT * FROM vip WHERE codestatut = 1";
         PreparedStatement pstmt = connexion.prepareStatement(requete);
         ResultSet rset = pstmt.executeQuery(requete);
-        
+
         Map<Integer, String> nats = new HashMap<>();
         this.getNationalites(nats);
-        
+
         while (rset.next()) {       // traitement du résulat
             int num = rset.getInt(1);
             String nom = rset.getString(2);
@@ -39,28 +36,28 @@ public class DAOVip {
             String civilite = rset.getString(4);
             LocalDate dateNaissance = rset.getDate(5).toLocalDate();
             String lieuNaissance = rset.getString(6);
-            
+
             Role role = Vip.getRole(rset.getInt(7));
             Statut statut = Vip.getStatut(rset.getInt(8));
-            
+
             String nationalite = nats.get(rset.getInt(9));
-                        
-            lesVips.add(new Vip(num,  nom, prenom, civilite, 
-                                dateNaissance, lieuNaissance,
-                                role, statut, nationalite));
+
+            lesVips.add(new Vip(num, nom, prenom, civilite,
+                    dateNaissance, lieuNaissance,
+                    role, statut, nationalite));
         }
         rset.close();
         pstmt.close();
     }
 
     public void lireLesVips(List<Vip> lesVips) throws Exception {
-        String requete = "select * from vip";
+        String requete = "SELECT * FROM vip";
         PreparedStatement pstmt = connexion.prepareStatement(requete);
         ResultSet rset = pstmt.executeQuery(requete);
-        
+
         Map<Integer, String> nats = new HashMap<>();
         this.getNationalites(nats);
-        
+
         while (rset.next()) {       // traitement du résulat
             int num = rset.getInt(1);
             String nom = rset.getString(2);
@@ -68,36 +65,36 @@ public class DAOVip {
             String civilite = rset.getString(4);
             LocalDate dateNaissance = rset.getDate(5).toLocalDate();
             String lieuNaissance = rset.getString(6);
-            
+
             Role role = Vip.getRole(rset.getInt(7));
             Statut statut = Vip.getStatut(rset.getInt(8));
-            
+
             String nationalite = nats.get(rset.getInt(9));
-                        
-            lesVips.add(new Vip(num,  nom, prenom, civilite, 
-                                dateNaissance, lieuNaissance,
-                                role, statut, nationalite));
+
+            lesVips.add(new Vip(num, nom, prenom, civilite,
+                    dateNaissance, lieuNaissance,
+                    role, statut, nationalite));
         }
         rset.close();
         pstmt.close();
     }
-    
+
     public void supprimerVip(int numeroVip) {
         String requete = "DELETE FROM vip WHERE idvip = ?";
-        
+
         try {
             PreparedStatement pstmt = connexion.prepareStatement(requete);
             pstmt.setInt(1, numeroVip);
             pstmt.executeUpdate();
             pstmt.close();
         } catch (Exception e) {
-            
+            System.out.println(e.getMessage());
         }
     }
-    
+
     public void getNationalites(Map<Integer, String> nat) {
         try {
-            String requete = "select id, nationalite from nationalite";
+            String requete = "SELECT id, nationalite FROM nationalite";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
             ResultSet rset = pstmt.executeQuery(requete);
             while (rset.next()) {
@@ -108,13 +105,13 @@ public class DAOVip {
             rset.close();
             pstmt.close();
         } catch (SQLException ex) {
-            //
+            System.out.println(ex.getMessage());
         }
     }
-    
+
     public void getCivilites(List<String> civ) {
         try {
-            String requete = "select distinct(civilite) from vip";
+            String requete = "SELECT DISTINCT(civilite) FROM vip";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
             ResultSet rset = pstmt.executeQuery(requete);
             while (rset.next()) {
@@ -124,14 +121,14 @@ public class DAOVip {
             rset.close();
             pstmt.close();
         } catch (SQLException ex) {
-            //
+            System.out.println(ex.getMessage());
         }
     }
-    
+
     public int nationaliteToInt(String nationalite) {
         Map<String, Integer> corresNat = new HashMap<>();
         try {
-            String requete = "select id, nationalite from nationalite";
+            String requete = "SELECT id, nationalite FROM nationalite";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
             ResultSet rset = pstmt.executeQuery(requete);
             while (rset.next()) {
@@ -142,76 +139,77 @@ public class DAOVip {
             rset.close();
             pstmt.close();
         } catch (SQLException ex) {
-            //
+            System.out.println(ex.getMessage());
         }
         return corresNat.get(nationalite);
     }
-    
+
     public Vip lireUnVipMariage(int numero) {
         try {
-            String requete = "select * from vip WHERE idvip = ? ;";
+            String requete = "SELECT * FROM vip WHERE idvip = ? ;";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
-            pstmt.setInt(1,numero);
+            pstmt.setInt(1, numero);
             ResultSet rset = pstmt.executeQuery();
             rset.next();
-            
+
             int num = rset.getInt(1);
             String nom = rset.getString(2);
             String prenom = rset.getString(3);
             Statut statut = Vip.getStatut(rset.getInt(8));
             LocalDate dateNaissance = rset.getDate(5).toLocalDate();
-            
-            Vip vip = new Vip(num,nom,prenom,dateNaissance,statut);
-            
+
+            Vip vip = new Vip(num, nom, prenom, dateNaissance, statut);
+
             rset.close();
             pstmt.close();
             return vip;
-            
+
         } catch (SQLException se) {
             System.out.println("sql " + se.getMessage());
         } catch (Exception e) {
-           System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         return null;
     }
-    
-        // codeStatut -> le statut qu'on veut avoir apès le changement
-        // Libre = 1 
-        // Marié(e) = 2
-    public void changerStatut(int numVip, int codeStatut){
+
+    // codeStatut -> le statut qu'on veut avoir apès le changement
+    // Libre = 1
+    // Marié(e) = 2
+    public void changerStatut(int numVip, int codeStatut) {
         try {
-            
-            String requete = "Update vip set codestatut = ? where idvip = ?";
+
+            String requete = "UPDATE vip SET codestatut = ? WHERE idvip = ?";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
-            pstmt.setInt(1,codeStatut);
-            pstmt.setInt(2,numVip);
+            pstmt.setInt(1, codeStatut);
+            pstmt.setInt(2, numVip);
             pstmt.executeQuery();
         } catch (SQLException ex) {
             System.out.println("Erreur sql dans le changement de Statut " + ex.getMessage());
         }
     }
-	
+
     public Boolean insererVip(Vip vip) {
         try {
-            String requete = "insert into vip (nom, prenom, civilite, datenaissance, lieunaissance, coderole, codestatut, idnat) values(?,?,?,?,?,?,?,?)";
+            String requete = "INSERT INTO vip " +
+                    "(nom, prenom, civilite, datenaissance, lieunaissance, coderole, codestatut, idnat) " +
+                    "VALUES(?,?,?,?,?,?,?,?)";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
             pstmt.setString(1, vip.getNom());
             pstmt.setString(2, vip.getPrenom());
             pstmt.setString(3, vip.getCivilite());
             pstmt.setDate(4, java.sql.Date.valueOf(vip.getDateNaissance()));
             pstmt.setString(5, vip.getLieuNaissance());
-            pstmt.setInt(6, vip.roleToInt(vip.getRole()));
-            pstmt.setInt(7, vip.statutToInt(vip.getStatut()));
+            pstmt.setInt(6, Vip.roleToInt(vip.getRole()));
+            pstmt.setInt(7, Vip.statutToInt(vip.getStatut()));
             pstmt.setInt(8, nationaliteToInt(vip.getNationalite()));
-            
+
             pstmt.executeUpdate();
             pstmt.close();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             return false;
         }
-        
+
         return true;
     }
-    
+
 }

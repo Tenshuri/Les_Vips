@@ -2,13 +2,13 @@ package modele;
 
 import application.Appli;
 import data.DAOVip;
+import metier.Vip;
+
+import javax.swing.table.AbstractTableModel;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.table.AbstractTableModel;
-
-import metier.Vip;
 
 public class ModeleJTable extends AbstractTableModel {
 
@@ -23,9 +23,9 @@ public class ModeleJTable extends AbstractTableModel {
         // définition du conteneur d'étudiants
         this.leConteneur = new ArrayList<>();
         // définition des noms du champ
-        this.titre = new String[]{"Numéro", "Nom", "Prénom", "Civilité", 
-            "Date de naissance", "Lieu de naissance", "Role", "Statut",
-            "Nationalité"};
+        this.titre = new String[]{"Numéro", "Nom", "Prénom", "Civilité",
+                "Date de naissance", "Lieu de naissance", "Role", "Statut",
+                "Nationalité"};
         // récupération de l'objet DAO utilisé
         this.leDaoVip = Appli.getDaoVip();
     }
@@ -51,8 +51,8 @@ public class ModeleJTable extends AbstractTableModel {
             case 2:
                 return vip.getPrenom();
             case 3:
-                return  vip.getCivilite();
-            case 4:                
+                return vip.getCivilite();
+            case 4:
                 return vip.getDateNaissance().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             case 5:
                 return vip.getLieuNaissance();
@@ -80,16 +80,15 @@ public class ModeleJTable extends AbstractTableModel {
             leDaoVip.lireLesVips(leConteneur);
             // si c'est OK on rafraichit la vue par une notification  
             this.fireTableDataChanged();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("jtable :" + e.getMessage());
         }
     }
-    
+
     public int getNumeroVip(int numLigne) {
         return Integer.parseInt(this.getValueAt(numLigne, 0).toString());
     }
-    
+
     public void supprimerVip(int numVip) {
         leDaoVip.supprimerVip(numVip);
         try {

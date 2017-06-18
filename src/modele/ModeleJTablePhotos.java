@@ -3,13 +3,13 @@ package modele;
 import application.Appli;
 import data.DAOApparaitre;
 import data.DAOPhoto;
+import metier.Apparaitre;
+import metier.Photo;
+
+import javax.swing.table.AbstractTableModel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.table.AbstractTableModel;
-import metier.Apparaitre;
-import metier.Photo;
-import metier.Vip;
 
 
 public class ModeleJTablePhotos extends AbstractTableModel {
@@ -77,21 +77,10 @@ public class ModeleJTablePhotos extends AbstractTableModel {
             leDaoPhoto.lireLesPhotos(leConteneur);
             // si c'est OK on rafraichit la vue par une notification  
             this.fireTableDataChanged();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Jtable :" + e.getMessage());
         }
     }
-    
-//    public void ajouterPhoto(Photo photo, Apparaitre app) throws SQLException {
-//
-//        leDaoPhoto.ajouterPhoto(photo);
-//        leDaoApp.ajouterApparaitre(app);
-//        // si c'est OK on l'ajoute au conteneur du modèle
-//        leConteneur.add(photo);
-//        // on rafraichit la vue par une notification de modification des données  
-//        this.fireTableDataChanged();
-//    }
 
     public void ajouterPhoto(Photo photo) throws SQLException {
 
@@ -101,7 +90,7 @@ public class ModeleJTablePhotos extends AbstractTableModel {
         // on rafraichit la vue par une notification de modification des données  
         this.fireTableDataChanged();
     }
-        
+
     public void ajouterApp(Apparaitre app) throws SQLException {
 
         leDaoApp.ajouterApparaitre(app);
@@ -109,16 +98,16 @@ public class ModeleJTablePhotos extends AbstractTableModel {
         // on rafraichit la vue par une notification de modification des données  
         this.fireTableDataChanged();
     }
-        
+
     public void ajoutVip(Apparaitre app, int numPhoto) throws SQLException {
         leDaoApp.ajouterVip(app, numPhoto);
         this.fireTableDataChanged();
     }
-    
+
     public int getNumPhoto(int i) {
         return leConteneur.get(i).getIdphoto();
     }
-    
+
     public String getCheminPhoto(int i) throws Exception {
         int id = leConteneur.get(i).getIdphoto();
         return leDaoPhoto.recupererChemin(chemin, id);

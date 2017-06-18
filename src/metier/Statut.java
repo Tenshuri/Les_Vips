@@ -1,7 +1,7 @@
 package metier;
 
- public enum Statut { 
-     LIBRE, 
-     MARIE,
-     INCONNU
+public enum Statut {
+    LIBRE,
+    MARIE,
+    INCONNU
 };

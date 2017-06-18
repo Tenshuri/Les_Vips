@@ -3,21 +3,18 @@ package modele;
 
 import application.Appli;
 import data.DAOVip;
+
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 
 
-/**
- *
- * @author Administrateur
- */
 public class ModeleJComboCivilite extends DefaultComboBoxModel<String> {
-    
+
     List<String> listeItems;
     private DAOVip leDaoVip;
-    
+
     public ModeleJComboCivilite() throws SQLException {
         // définition du conteneur des groupes
         this.listeItems = new ArrayList<>();

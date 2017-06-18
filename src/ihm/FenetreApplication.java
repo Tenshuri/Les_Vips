@@ -1,21 +1,21 @@
 package ihm;
 
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import application.Appli;
 import metier.Vip;
 import modele.ModeleJTable;
-import application.Appli;
-import javax.swing.ImageIcon;
+
+import javax.swing.*;
+import java.sql.SQLException;
 
 public class FenetreApplication extends javax.swing.JFrame {
 
     private ModeleJTable leModele;
 
     public FenetreApplication() throws Exception {
-        
+
         ImageIcon img = new ImageIcon("Icon.png");
         this.setIconImage(img.getImage());
-        
+
         // instanciation du modele de données de la JTable
         this.leModele = new ModeleJTable();
         // initialisation des composants
@@ -91,25 +91,25 @@ public class FenetreApplication extends javax.swing.JFrame {
         javax.swing.GroupLayout jpGestionLayout = new javax.swing.GroupLayout(jpGestion);
         jpGestion.setLayout(jpGestionLayout);
         jpGestionLayout.setHorizontalGroup(
-            jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpGestionLayout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(btInserer, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
-                .addComponent(btnModifierVIP)
-                .addGap(50, 50, 50)
-                .addComponent(btPhoto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jpGestionLayout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addComponent(btInserer, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(61, 61, 61)
+                                .addComponent(btnModifierVIP)
+                                .addGap(50, 50, 50)
+                                .addComponent(btPhoto)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpGestionLayout.setVerticalGroup(
-            jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpGestionLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btInserer)
-                    .addComponent(btnModifierVIP)
-                    .addComponent(btPhoto))
-                .addContainerGap(26, Short.MAX_VALUE))
+                jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jpGestionLayout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addGroup(jpGestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btInserer)
+                                        .addComponent(btnModifierVIP)
+                                        .addComponent(btPhoto))
+                                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -118,26 +118,26 @@ public class FenetreApplication extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
-                        .addComponent(jpGestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+                                                .addComponent(jpGestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jpGestion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jpGestion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -147,16 +147,15 @@ public class FenetreApplication extends javax.swing.JFrame {
         Vip vip = new Vip(0, null, null, null);
         FenetreSaisieVip laSaisie = new FenetreSaisieVip(this, vip);
         if (laSaisie.doModal() == true) {
-                try {
-                    leModele.chargerLesVips();
-                } catch (Exception e) {
-                    System.out.println("pas possible");
-                }
+            try {
+                leModele.chargerLesVips();
+            } catch (Exception e) {
+                System.out.println("pas possible");
+            }
         }
     }//GEN-LAST:event_btInsererActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
         int reponse = JOptionPane.showConfirmDialog(this, "Voulez vraiment sortir ?", "Confirmation", JOptionPane.YES_NO_OPTION);
         if (reponse == JOptionPane.YES_OPTION) {
             this.dispose();
@@ -166,13 +165,12 @@ public class FenetreApplication extends javax.swing.JFrame {
     private void btnModifierVIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifierVIPActionPerformed
         int ligneSelectionne = laTable.getSelectedRow();
         //on récupére la valeur de la première colonne de la ligne sélectionné
-        int numero = (int)laTable.getValueAt(ligneSelectionne, 0);
+        int numero = (int) laTable.getValueAt(ligneSelectionne, 0);
 
         FenetreMariageVIP fMariage = null;
         try {
-            fMariage = new FenetreMariageVIP(this,numero);
-        }
-        catch (Exception e) {
+            fMariage = new FenetreMariageVIP(this, numero);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         if (fMariage.doModal() == true) {
@@ -187,8 +185,8 @@ public class FenetreApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModifierVIPActionPerformed
 
     private void laTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_laTableMouseClicked
-          
-        if(laTable.getSelectedRow() != -1){
+
+        if (laTable.getSelectedRow() != -1) {
             btnModifierVIP.setEnabled(true);
         }
     }//GEN-LAST:event_laTableMouseClicked

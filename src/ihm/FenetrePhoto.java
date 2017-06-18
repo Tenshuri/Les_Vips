@@ -1,19 +1,19 @@
 package ihm;
 
 import application.Appli;
-import java.awt.Frame;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import metier.Apparaitre;
 import metier.Photo;
 import modele.ModeleJTablePhotos;
 
+import javax.swing.*;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class FenetrePhoto extends javax.swing.JFrame {
 
-    //private final Photo photo;
     private boolean etatSortie;
     private ModeleJTablePhotos leModele;
     public int numPhoto;
@@ -31,7 +31,7 @@ public class FenetrePhoto extends javax.swing.JFrame {
             System.out.println(" Erreur au chargement : " + ex.getMessage());
         }
     }
- 
+
     public void doModal() {
         this.setVisible(true);
     }
@@ -79,38 +79,38 @@ public class FenetrePhoto extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(btAjoutVIP)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addComponent(btAjoutPhoto)
-                .addGap(48, 48, 48))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(140, 140, 140)
-                .addComponent(btAffPhoto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblInfo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addContainerGap())
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addComponent(btAjoutVIP)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                                .addComponent(btAjoutPhoto)
+                                .addGap(48, 48, 48))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(140, 140, 140)
+                                .addComponent(btAffPhoto)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblInfo)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btAffPhoto)
-                    .addComponent(lblInfo))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btAjoutPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btAjoutVIP, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btAffPhoto)
+                                        .addComponent(lblInfo))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btAjoutPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btAjoutVIP, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleParent(this);
@@ -130,7 +130,7 @@ public class FenetrePhoto extends javax.swing.JFrame {
             System.out.println("Erreur à ajouter : " + e.getMessage());
         } catch (Exception ex) {
             Logger.getLogger(FenetrePhoto.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
     }//GEN-LAST:event_btAjoutVIPActionPerformed
 
     public int getNumPhoto() {
@@ -164,23 +164,22 @@ public class FenetrePhoto extends javax.swing.JFrame {
 
         int ligne = laTablePhoto.getSelectedRow();
         if (ligne != -1) {
-           
+
             try {
-                    String cheminPhoto = leModele.getCheminPhoto(ligne);
-                    AffichagePhoto aff = new AffichagePhoto(this, false);
-                    String photoSelectionnee = cheminPhoto;
-                    System.out.println(cheminPhoto);
+                String cheminPhoto = leModele.getCheminPhoto(ligne);
+                AffichagePhoto aff = new AffichagePhoto(this, false);
+                String photoSelectionnee = cheminPhoto;
+                System.out.println(cheminPhoto);
 //                Apparaitre app = new Apparaitre();
 //                FenetreSaisieVip ajoutVip = new FenetreSaisieVip(this, app);
 //                if (ajoutVip.doModal() == true) {
 //                    leModele.ajoutVip(app, FenetreSaisieVip.getLePhoto());
 //                }
-                    aff.doModal(photoSelectionnee);
+                aff.doModal(photoSelectionnee);
             } catch (Exception ex) {
                 Logger.getLogger(FenetrePhoto.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "Sélectioner une photo", "Erreur", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btAffPhotoActionPerformed

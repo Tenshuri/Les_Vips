@@ -88,13 +88,4 @@ public class ModeleJTable extends AbstractTableModel {
     public int getNumeroVip(int numLigne) {
         return Integer.parseInt(this.getValueAt(numLigne, 0).toString());
     }
-
-    public void supprimerVip(int numVip) {
-        leDaoVip.supprimerVip(numVip);
-        try {
-            this.chargerLesVips();
-        } catch (Exception e) {
-            //
-        }
-    }
 }

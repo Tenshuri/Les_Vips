@@ -79,18 +79,7 @@ public class DAOVip {
         pstmt.close();
     }
 
-    public void supprimerVip(int numeroVip) {
-        String requete = "DELETE FROM vip WHERE idvip = ?";
 
-        try {
-            PreparedStatement pstmt = connexion.prepareStatement(requete);
-            pstmt.setInt(1, numeroVip);
-            pstmt.executeUpdate();
-            pstmt.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     public void getNationalites(Map<Integer, String> nat) {
         try {
@@ -144,7 +133,7 @@ public class DAOVip {
         return corresNat.get(nationalite);
     }
 
-    public Vip lireUnVipMariage(int numero) {
+    public Vip lireUnVip(int numero) {
         try {
             String requete = "SELECT * FROM vip WHERE idvip = ? ;";
             PreparedStatement pstmt = connexion.prepareStatement(requete);

@@ -34,7 +34,7 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
         initComponents();
         try {
             boxVip.setSelectedIndex(0);
-            vip = Appli.getDaoVip().lireUnVipMariage(numero);
+            vip = Appli.getDaoVip().lireUnVip(numero);
             dateMariage = Appli.getDaoMariages().getDateMariageEnCours(numero);
             txtNom.setText(vip.getNom());
             System.out.println(dateMariage);
@@ -289,8 +289,8 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
 
         LocalDate dateDivorceVip1;
         LocalDate dateDivorceVip2;
-        LocalDate dateNaissanceVip1 = Appli.getDaoVip().lireUnVipMariage(numero).getDateNaissance();
-        LocalDate dateNaissancePartenaire = Appli.getDaoVip().lireUnVipMariage(lePartenaire).getDateNaissance();
+        LocalDate dateNaissanceVip1 = Appli.getDaoVip().lireUnVip(numero).getDateNaissance();
+        LocalDate dateNaissancePartenaire = Appli.getDaoVip().lireUnVip(lePartenaire).getDateNaissance();
         LocalDate dateMariageDemandee = datePickerM.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate dateMariageVip1 = Appli.getDaoMariages().getDateMariageEnCours(numero);
         LocalDate dateMariagePartenaire = Appli.getDaoMariages().getDateMariageEnCours(lePartenaire);

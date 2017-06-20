@@ -14,7 +14,7 @@ public class FenetreSaisieVipPhoto extends javax.swing.JDialog {
     private ModeleJTable leModeleTable;
     private ModeleJTablePhotos leModeleTPhoto;
     private Apparaitre app;
-    public static int lePhoto;
+    public static int laPhoto;
 
     public FenetreSaisieVipPhoto(java.awt.Frame parent, Apparaitre app) throws Exception {
         super(parent, true);  // mode modal 
@@ -179,11 +179,8 @@ public class FenetreSaisieVipPhoto extends javax.swing.JDialog {
             //  validation sélection Photo
             int index = laTablePhoto.getSelectedRow();
             if (index < 0) {
-                throw new Exception("choisir un photo à modifier");
+                throw new Exception("choisir une photo à modifier");
             }
-            //int lePhoto = leModeleTPhoto.getNumPhoto(index);
-            //app.getIdPhoto(lePhoto);
-            //lbPhotoSelect.setText(String.valueOf());
 
             //  validation sélection VIP
             int indexItem = laTable.getSelectedRow();
@@ -191,9 +188,9 @@ public class FenetreSaisieVipPhoto extends javax.swing.JDialog {
                 throw new Exception("choisir au moins un vip existant");
             }
             int leVip = leModeleTable.getNumeroVip(indexItem);
-            lePhoto = leModeleTPhoto.getNumPhoto(index);
+            laPhoto = leModeleTPhoto.getNumPhoto(index);
             app.setIdVip(leVip);
-            app.setIdPhoto(lePhoto);
+            app.setIdPhoto(laPhoto);
 
             etatSortie = true;
             this.dispose();
@@ -203,7 +200,7 @@ public class FenetreSaisieVipPhoto extends javax.swing.JDialog {
     }//GEN-LAST:event_btValidActionPerformed
 
     public static int getLePhoto() {
-        return lePhoto;
+        return laPhoto;
     }
 
 

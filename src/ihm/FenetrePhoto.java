@@ -124,6 +124,7 @@ public class FenetrePhoto extends javax.swing.JFrame {
             Apparaitre app = new Apparaitre();
             FenetreSaisieVipPhoto ajoutVip = new FenetreSaisieVipPhoto(this, app);
             if (ajoutVip.doModal() == true) {
+                //System.out.println("num photo = " + FenetreSaisieVipPhoto.getLePhoto());
                 leModele.ajoutVip(app, FenetreSaisieVipPhoto.getLePhoto());
             }
         } catch (SQLException e) {

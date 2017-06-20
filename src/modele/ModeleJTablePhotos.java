@@ -93,14 +93,17 @@ public class ModeleJTablePhotos extends AbstractTableModel {
 
     public void ajouterApp(Apparaitre app) throws SQLException {
 
-        leDaoApp.ajouterApparaitre(app);
+        leDaoApp.ajouterApparaitre(app, app.getIdPhoto());
         // si c'est OK on l'ajoute au conteneur du modèle
         // on rafraichit la vue par une notification de modification des données  
         this.fireTableDataChanged();
     }
 
-    public void ajoutVip(Apparaitre app, int numPhoto) throws SQLException {
-        leDaoApp.ajouterVip(app, numPhoto);
+    public void ajoutVip(Apparaitre app, int numPhoto) throws 
+            Exception {
+        leDaoApp.ajouterApparaitre(app, numPhoto);
+        
+        this.chargerLesPhotos();
         this.fireTableDataChanged();
     }
 

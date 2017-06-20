@@ -21,6 +21,7 @@ public class DAOVip {
         this.connexion = connexion;
     }
 
+    // Lire les VIPs non mariés dans la liste donnée en argument
     public void lireLesVipsLibres(List<Vip> lesVips) throws Exception {
         String requete = "SELECT * FROM vip WHERE codestatut = 1";
         PreparedStatement pstmt = connexion.prepareStatement(requete);
@@ -50,6 +51,7 @@ public class DAOVip {
         pstmt.close();
     }
 
+    // Lire tous les VIPs dans la liste donnée en argument
     public void lireLesVips(List<Vip> lesVips) throws Exception {
         String requete = "SELECT * FROM vip";
         PreparedStatement pstmt = connexion.prepareStatement(requete);
@@ -81,6 +83,7 @@ public class DAOVip {
 
 
 
+    // Récupérer toutes les nationalités, sous forme id nationalité -> libellé nationalité (clé -> valeur)
     public void getNationalites(Map<Integer, String> nat) {
         try {
             String requete = "SELECT id, nationalite FROM nationalite";
@@ -98,6 +101,7 @@ public class DAOVip {
         }
     }
 
+    // Récupérer les civilités dans la liste donnée en argument
     public void getCivilites(List<String> civ) {
         try {
             String requete = "SELECT DISTINCT(civilite) FROM vip";
@@ -114,6 +118,7 @@ public class DAOVip {
         }
     }
 
+    // Convertir un libellé de nationalité en id de nationalité
     public int nationaliteToInt(String nationalite) {
         Map<String, Integer> corresNat = new HashMap<>();
         try {
@@ -133,6 +138,7 @@ public class DAOVip {
         return corresNat.get(nationalite);
     }
 
+    // Récupérer un vip depuis son numéro
     public Vip lireUnVip(int numero) {
         try {
             String requete = "SELECT * FROM vip WHERE idvip = ? ;";
@@ -161,6 +167,7 @@ public class DAOVip {
         return null;
     }
 
+    // Changer le statut d'un VIP
     // codeStatut -> le statut qu'on veut avoir apès le changement
     // Libre = 1
     // Marié(e) = 2
@@ -177,6 +184,7 @@ public class DAOVip {
         }
     }
 
+    // Insérer un VIP dans la base
     public Boolean insererVip(Vip vip) {
         try {
             String requete = "INSERT INTO vip " +

@@ -14,6 +14,7 @@ public class DAOApparaitre {
         this.connexion = connexion;
     }
 
+    // Faire apparaître un vip sur une photo (table apparaitre)
     public void ajouterApparaitre(Apparaitre app, int numPhoto) {
         try {
             String requete = "INSERT INTO apparaitre(idvip, idphoto) VALUES(?,?) ;";

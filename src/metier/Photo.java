@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package metier;
 
-/**
- *
- * @author p1512264
- */
 public class Photo {
-    
+
     private int idphoto;
     private String lieu;
     private int annee;
@@ -26,7 +17,7 @@ public class Photo {
     public Photo() {
     }
 
-        public int getIdphoto() {
+    public int getIdphoto() {
         return idphoto;
     }
 
@@ -57,7 +48,6 @@ public class Photo {
     public void setChemin(String chemin) {
         this.chemin = chemin;
     }
-    
-    
-    
+
+
 }

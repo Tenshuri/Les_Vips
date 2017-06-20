@@ -36,6 +36,7 @@ public class Vip {
         this(num, nom, prenom, null, dateNaissance, null, null, statut, null);
     }
 
+    // Convertir un statut en libellé de statut
     public static String statutToString(Statut statut) {
         if (statut == Statut.MARIE) {
             return "Marié(e)";
@@ -46,6 +47,7 @@ public class Vip {
         }
     }
 
+    // Convertir un statut en code de statut
     public static int statutToInt(Statut statut) {
         if (statut == Statut.LIBRE) {
             return 1;
@@ -56,6 +58,7 @@ public class Vip {
         }
     }
 
+    // Convertir un code role en role
     public static Role getRole(int codeRole) throws Exception {
         if (codeRole == 1) return Role.ACTEUR;
         else if (codeRole == 2) return Role.REALISATEUR;
@@ -66,6 +69,7 @@ public class Vip {
         }
     }
 
+    // Convertir un role en code role
     public static int roleToInt(Role role) {
         if (role == Role.ACTEUR) return 1;
         else if (role == Role.REALISATEUR) return 2;
@@ -75,6 +79,7 @@ public class Vip {
         }
     }
 
+    // Convertir un code statut en statut
     public static Statut getStatut(int codeStatut) throws Exception {
         if (codeStatut == 1) return Statut.LIBRE;
         else if (codeStatut == 2) return Statut.MARIE;

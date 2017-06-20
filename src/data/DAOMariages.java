@@ -54,6 +54,7 @@ public class DAOMariages {
         return null;
     }
 
+    // Divorcer deux VIPs
     public void prepareDivorce(int numero, Date dateMariage, Date dateDivorce) {
         int autreVip = -1;
         String dateMariageSql = dateMariage.toString();
@@ -120,6 +121,7 @@ public class DAOMariages {
         }
     }
 
+    // Récupérer la date du dernier divorce d'un VIP (si existante)
     public LocalDate dernierDivorce(int vip) {
         try {
             String requete = "SELECT max(datedivorce) FROM unionmaritale WHERE idvip1 = ?  OR idvip2 = ?;";
@@ -136,6 +138,7 @@ public class DAOMariages {
         }
     }
 
+    // Marier deux VIPs
     public void fraichementMarie(int id1, int id2, Date dateM, String lieu) {
         try {
             java.sql.Date dateMariageSql = new java.sql.Date(dateM.getTime());

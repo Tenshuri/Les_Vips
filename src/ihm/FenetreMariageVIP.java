@@ -351,7 +351,7 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
             if (dateMariage == null) {
                 System.out.println(numero);
             }
-            if (dateDivorceDemandee.isAfter(dateMariage)) {
+            if (dateDivorceDemandee.isBefore(dateMariage)) {
                 JOptionPane.showMessageDialog(this, "La date de Divorce est inférieure à la date de Mariage", "Attention", JOptionPane.WARNING_MESSAGE);
             } else {
                 // Date Valide

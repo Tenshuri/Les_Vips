@@ -58,14 +58,7 @@
                               <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
                               <Component id="lbVips" min="-2" pref="342" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lbSelectionPhoto" min="-2" pref="94" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lbPhotoSelect" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="jScrollPane2" alignment="0" min="-2" pref="440" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jScrollPane2" alignment="0" min="-2" pref="440" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -102,12 +95,7 @@
                               <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lbSelectionPhoto" min="-2" pref="22" max="-2" attributes="0"/>
-                                  <Component id="lbPhotoSelect" min="-2" pref="22" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace pref="45" max="32767" attributes="0"/>
+                              <EmptySpace type="unrelated" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lbVip" min="-2" pref="26" max="-2" attributes="0"/>
                                   <Component id="jScrollPane1" min="-2" pref="110" max="-2" attributes="0"/>
@@ -164,13 +152,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="lbSelectionPhoto">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Photo selectionn&#xe9;:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lbPhotoSelect">
-    </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>

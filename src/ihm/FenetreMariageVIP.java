@@ -48,10 +48,18 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
                 datePickerM.setEnabled(true);
                 txtLieuMariage.setEnabled(true);
                 boxVip.setEnabled(true);
+                btnDivorce.setVisible(false);
+                datePickerD.setVisible(false);
+                jPanel2.setVisible(false);
 
             } else if (vip.getStatut() == Statut.MARIE) {
                 btnDivorce.setEnabled(true);
                 datePickerD.setEnabled(true);
+                btnMariage.setVisible(false);
+                datePickerM.setVisible(false);
+                txtLieuMariage.setVisible(false);
+                boxVip.setVisible(false);
+                jPanel1.setVisible(false);
 
             }
         } catch (Exception e) {
@@ -300,7 +308,7 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
             dateDivorceVip1 = Appli.getDaoMariages().dernierDivorce(numero);
             dateDivorceVip2 = Appli.getDaoMariages().dernierDivorce(lePartenaire);
 
-            if (dateMariageDemandee.isAfter(dateDivorceVip1)) {
+            if ((dateMariageVip1 == null && dateDivorceVip1 == null) || dateMariageDemandee.isAfter(dateDivorceVip1)) {
                 verifierMariagePartenaire(dateMariageDemandee, dateDivorceVip2, dateNaissanceVip1, dateNaissancePartenaire, dateMariagePartenaire, lePartenaire);
             } else {
                 JOptionPane.showMessageDialog(this, "La date du Mariage est incorrecte", "Attention", JOptionPane.WARNING_MESSAGE);
@@ -316,7 +324,7 @@ public class FenetreMariageVIP extends javax.swing.JDialog {
                                            LocalDate dateNaissanceVip1, LocalDate dateNaissancePartenaire, LocalDate dateMariagePartenaire,
                                            int lePartenaire) {
         // Vérifie si la date demandée est apres la date de Divorce Vip2 Ou regarde si VIP2 a été marié
-        if (dateMariageDemandee.isAfter(dateDivorceVip2)) {
+        if (dateDivorceVip2 == null || dateMariageDemandee.isAfter(dateDivorceVip2)) {
             verifierMajorite(dateMariageDemandee, dateNaissanceVip1, dateNaissancePartenaire, lePartenaire);
         } else if (dateMariagePartenaire == null) {
             verifierMajorite(dateMariageDemandee, dateNaissanceVip1, dateNaissancePartenaire, lePartenaire);

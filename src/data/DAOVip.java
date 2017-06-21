@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -86,9 +87,9 @@ public class DAOVip {
     // Récupérer toutes les nationalités, sous forme id nationalité -> libellé nationalité (clé -> valeur)
     public void getNationalites(Map<Integer, String> nat) {
         try {
-            String requete = "SELECT id, nationalite FROM nationalite";
+            String requete = "SELECT * FROM nationalite";
             PreparedStatement pstmt = connexion.prepareStatement(requete);
-            ResultSet rset = pstmt.executeQuery(requete);
+            ResultSet rset = pstmt.executeQuery();
             while (rset.next()) {
                 int id = rset.getInt(1);
                 String lanat = rset.getString(2);

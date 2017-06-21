@@ -25,7 +25,7 @@ public class DAOMariages {
             ResultSet rset;
             rset = pstmt.executeQuery();
             rset.next();
-            LocalDate dernDateMariage = rset.getDate(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate dernDateMariage = rset.getDate(1).toLocalDate();
             rset.close();
             pstmt.close();
 
@@ -40,7 +40,8 @@ public class DAOMariages {
                 ResultSet rset = pstmt.executeQuery();
                 rset.next();
 
-                LocalDate dernDateMariage2 = rset.getDate(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                Date dd2 = rset.getDate(1);
+                LocalDate dernDateMariage2 = dd2.toLocalDate();
                 rset.close();
                 pstmt.close();
 
@@ -131,7 +132,12 @@ public class DAOMariages {
             ResultSet rset;
             rset = pstmt.executeQuery();
             rset.next();
-            return rset.getDate(1).toLocalDate();
+            Date ddd = rset.getDate(1);
+            if (ddd != null) {
+                return ddd.toLocalDate();
+            } else {
+                return null;
+            }
         } catch (SQLException ex) {
             // Il n'y a pas de dernier divorce
             return null;

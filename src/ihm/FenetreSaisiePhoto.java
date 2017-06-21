@@ -15,6 +15,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.net.URLConnection;
 import java.sql.SQLException;
@@ -252,13 +253,9 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
         //création dun nouveau filechosser
         String chemin;
         JFileChooser chooser = new JFileChooser();
-        //intitulé du bouton
-        //chooser.setApproveButtonText("Choix du fichier");
-        //affiche la boite de dialogue
-        //chooser.showOpenDialog(null);
+        FileNameExtensionFilter fnef = new FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp");
+        chooser.setFileFilter(fnef);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            //txtImages.setText(chooser.getSelectedFile().getAbsolutePath());
-            //txtImages.setText(chooser.getSelectedFile().getName());
             cheminLong = chooser.getSelectedFile().getAbsolutePath();
             txtImages.setText(chooser.getSelectedFile().getName());
         }

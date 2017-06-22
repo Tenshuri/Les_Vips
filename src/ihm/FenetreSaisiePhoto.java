@@ -211,29 +211,35 @@ public class FenetreSaisiePhoto extends javax.swing.JDialog {
             // validation saisie du l'image          
             String image = txtImages.getText();
             if (image.isEmpty()) {
-                throw new Exception("champ image vide");
+                throw new Exception("Champ image vide");
             }
             photo.setChemin(image);
 
             // validation saisie du lieu de photo
             String leLieu = txtLieu.getText();
             if (leLieu.isEmpty()) {
-                throw new Exception("champ lieu vide");
+                throw new Exception("Champ lieu vide");
             }
             photo.setLieu(leLieu);
 
             // validation saisie de l'année de photo
             String annee = txtAnnee.getText();
             if (annee.isEmpty()) {
-                throw new Exception("champ année vide");
+                throw new Exception("Champ année vide");
             }
             photo.setAnnee(Integer.parseInt(annee));
 
             // validation sélection de VIP 
             int indexItem = laTable.getSelectedRow();
             if (indexItem < 0) {
-                throw new Exception("choisir au moins un vip existant");
+                throw new Exception("Choisir au moins un vip existant");
             }
+
+            // validation sélection de fichier
+            if (cheminLong == null) {
+                throw new Exception("Aucun fichier n'a été choisi");
+            }
+
             int leVip = leModeleTable.getNumeroVip(indexItem);
             //int lePhoto = leModeleTPhoto.getNumPhoto(indexItem);
             app.setIdVip(leVip);

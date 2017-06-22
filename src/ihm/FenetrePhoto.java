@@ -171,11 +171,6 @@ public class FenetrePhoto extends javax.swing.JFrame {
                 AffichagePhoto aff = new AffichagePhoto(this, false);
                 String photoSelectionnee = cheminPhoto;
                 System.out.println(cheminPhoto);
-//                Apparaitre app = new Apparaitre();
-//                FenetreSaisieVip ajoutVip = new FenetreSaisieVip(this, app);
-//                if (ajoutVip.doModal() == true) {
-//                    leModele.ajoutVip(app, FenetreSaisieVip.getLePhoto());
-//                }
                 aff.doModal(photoSelectionnee);
             } catch (Exception ex) {
                 Logger.getLogger(FenetrePhoto.class.getName()).log(Level.SEVERE, null, ex);
